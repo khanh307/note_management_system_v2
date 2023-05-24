@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
 
-class NoteScreen extends StatelessWidget {
-  const NoteScreen({Key? key}) : super(key: key);
+class ChangePasswordScreen extends StatelessWidget {
+  const ChangePasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Note screen'),
+        child: Text('Change Password screen'),
       ),
     );
   }
