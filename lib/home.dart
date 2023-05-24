@@ -61,7 +61,7 @@ class _HomePage extends StatelessWidget {
       ),
       body: BlocBuilder<DrawerCubit, int>(
         builder: (context, state) {
-          // Thêm trang ngày đây
+          // Thêm trang ngay đây
           return widgets[state];
         },
       ),
