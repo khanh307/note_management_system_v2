@@ -14,21 +14,17 @@ class SignUpCubit extends Cubit<SignUpSate> {
     final url =
         '${APIConstant.BASE_URL}/signup?email=$email&pass=$password&firstname=$firstName&lastname=$lastName';
     try {
-      final response = await http.post(Uri.parse(url));
+      final response = await http.get(Uri.parse(url));
       final data = jsonDecode(response.body);
 
       if (data['status'] == 1) {
-        // Đăng ký thành công
         emit(SignUpSucessState());
       } else if (data['status'] == -1 && data['error'] == 2) {
-        // Lỗi: trùng email
         emit(SignUpErrorState('Email already exists'));
       } else {
-        // Lỗi khác
         emit(SignUpErrorState('An error occurred'));
       }
     } catch (e) {
-      // Xử lý lỗi kết nối, lỗi server, v.v.
       emit(SignUpErrorState('An error occurred'));
     }
   }

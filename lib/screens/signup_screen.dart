@@ -44,10 +44,8 @@ class _SignUpHomeState extends State<SignUpHome> {
               child: CircularProgressIndicator(),
             );
           } else if (state is SignUpSucessState) {
-            // Xử lý khi đăng ký thành công
             return const Text('Sign Up Successful');
           } else if (state is SignUpErrorState) {
-            // Xử lý khi có lỗi đăng ký
             return Text('Sign Up Error: ${state.errorMessage}');
           } else {
             return SingleChildScrollView(

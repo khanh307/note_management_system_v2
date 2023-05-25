@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.note_management_system_v2">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="note_management_system_v2"
         android:name="${applicationName}"
