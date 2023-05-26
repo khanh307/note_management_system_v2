@@ -8,7 +8,6 @@ import 'package:note_management_system_v2/screens/signup_screen.dart';
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

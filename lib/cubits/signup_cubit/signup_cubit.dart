@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class SignUpCubit extends Cubit<SignUpSate> {
   SignUpCubit() : super(SignUpInitial());
 
-  void signUp(
+  void addAccount(
       String email, String password, String firstName, String lastName) async {
     emit(SignUpLoadingState());
     final url =
@@ -21,11 +21,9 @@ class SignUpCubit extends Cubit<SignUpSate> {
         emit(SignUpSucessState());
       } else if (data['status'] == -1 && data['error'] == 2) {
         emit(SignUpErrorState('Email already exists'));
-      } else {
-        emit(SignUpErrorState('An error occurred'));
       }
     } catch (e) {
-      emit(SignUpErrorState('An error occurred'));
+      emit(SignUpErrorState(e.toString()));
     }
   }
 }
