@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class Response {
   int status;
-  int? error;
+  dynamic error;
   List? data;
 
   Response({required this.status, this.error, this.data});
