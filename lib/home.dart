@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/drawer_cubit/drawer_cubit.dart';
+import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/screens/category_screen.dart';
 import 'package:note_management_system_v2/screens/change_password_screen.dart';
@@ -11,21 +12,25 @@ import 'package:note_management_system_v2/screens/priority_screen.dart';
 import 'package:note_management_system_v2/screens/status_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  User? user;
+  final User? user;
 
-  HomeScreen({super.key, this.user});
+  const HomeScreen({super.key, this.user});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DrawerCubit(),
-      child: _HomePage(),
+      child: _HomePage(
+        user: user!,
+      ),
     );
   }
 }
 
 class _HomePage extends StatelessWidget {
-  _HomePage({Key? key}) : super(key: key);
+  final User user;
+
+  _HomePage({Key? key, required this.user}) : super(key: key);
 
   final List<String> titles = [
     'Dashboard Form',
@@ -38,13 +43,13 @@ class _HomePage extends StatelessWidget {
   ];
 
   final List<Widget> widgets = [
-    DashboardScreen(),
-    CategoryScreen(),
-    PriorityScreen(),
-    StatusScreen(),
-    NoteScreen(),
-    EditProfileScreen(),
-    ChangePasswordScreen(),
+    const DashboardScreen(),
+    const CategoryScreen(),
+    const PriorityScreen(),
+    const StatusScreen(),
+    const NoteScreen(),
+    const EditProfileScreen(),
+    const ChangePasswordScreen(),
   ];
 
   @override
@@ -57,7 +62,6 @@ class _HomePage extends StatelessWidget {
             return Text(titles[state]);
           },
         ),
-
       ),
       body: BlocBuilder<DrawerCubit, int>(
         builder: (context, state) {
@@ -71,7 +75,7 @@ class _HomePage extends StatelessWidget {
           children: [
             UserAccountsDrawerHeader(
               accountName: const Text('Note Management System'),
-              accountEmail: Text('user.email!'),
+              accountEmail: Text(user.email!),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
                   child: Image.asset('assets/images/profile.png'),

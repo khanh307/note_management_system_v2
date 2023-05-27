@@ -39,11 +39,11 @@ class _SignInHomeState extends State<SignInHome> {
         title: const Text('Login'),
       ),
       body: BlocBuilder<SignInCubit, SignInState>(builder: (context, state) {
-      if (state is SignInSucessState) {
+      if (state is SignInSuccessState) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => HomeScreen()),
+              MaterialPageRoute(builder: (context) => HomeScreen(user: state.user,)),
               (route) => false,
             );
           });

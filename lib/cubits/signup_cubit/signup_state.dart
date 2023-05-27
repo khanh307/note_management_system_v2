@@ -4,7 +4,7 @@ class SignUpInitial extends SignUpSate {}
 
 class SignUpLoadingState extends SignUpSate {}
 
-class SignUpSucessState extends SignUpSate {}
+class SignUpSuccessState extends SignUpSate {}
 
 class SignUpErrorState extends SignUpSate {
   final String errorMessage;

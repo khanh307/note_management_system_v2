@@ -18,7 +18,7 @@ class SignUpCubit extends Cubit<SignUpSate> {
       final data = jsonDecode(response.body);
 
       if (data['status'] == 1) {
-        emit(SignUpSucessState());
+        emit(SignUpSuccessState());
       } else if (data['status'] == -1 && data['error'] == 2) {
         emit(SignUpErrorState('Email already exists'));
       }

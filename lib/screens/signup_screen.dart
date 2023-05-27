@@ -44,7 +44,7 @@ class _SignUpHomeState extends State<SignUpHome> {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is SignUpSucessState) {
+        } else if (state is SignUpSuccessState) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.pushAndRemoveUntil(
               context,
