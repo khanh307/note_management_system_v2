@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/drawer_cubit/drawer_cubit.dart';
-import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
+import 'package:note_management_system_v2/localization/languages.dart';
+import 'package:note_management_system_v2/localization/languages_constant.dart';
 import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/screens/category_screen.dart';
 import 'package:note_management_system_v2/screens/change_password_screen.dart';
@@ -10,18 +11,50 @@ import 'package:note_management_system_v2/screens/edit_profile_screen.dart';
 import 'package:note_management_system_v2/screens/note_screen.dart';
 import 'package:note_management_system_v2/screens/priority_screen.dart';
 import 'package:note_management_system_v2/screens/status_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final User? user;
 
   const HomeScreen({super.key, this.user});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _HomeScreenState? state =
+        context.findAncestorStateOfType<_HomeScreenState>();
+    state?.setLocale(newLocale);
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Locale? _locale;
+
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) => {setLocale(locale)});
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DrawerCubit(),
-      child: _HomePage(
-        user: user!,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: _locale,
+      home: BlocProvider(
+        create: (context) => DrawerCubit(),
+        child: _HomePage(
+          user: widget.user!,
+        ),
       ),
     );
   }
@@ -30,7 +63,7 @@ class HomeScreen extends StatelessWidget {
 class _HomePage extends StatelessWidget {
   final User user;
 
-  _HomePage({super.key, required this.user}) ;
+  _HomePage({super.key, required this.user});
 
   final List<String> titles = [
     'Dashboard Form',
@@ -42,14 +75,14 @@ class _HomePage extends StatelessWidget {
     'Change Password Form'
   ];
 
-
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> widgets = [
       const DashboardScreen(),
       const CategoryScreen(),
-      PriorityScreen(user: user,),
+      PriorityScreen(
+        user: user,
+      ),
       StatusScreen(user: user),
       const NoteScreen(),
       const EditProfileScreen(),
@@ -64,6 +97,40 @@ class _HomePage extends StatelessWidget {
             return Text(titles[state]);
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: DropdownButton<Language>(
+              underline: const SizedBox(),
+              icon: const Icon(
+                Icons.language,
+                color: Colors.white,
+              ),
+              onChanged: (Language? language) async {
+                if (language != null) {
+                  Locale _locale = await setLocale(language.languageCode);
+                  HomeScreen.setLocale(context, _locale);
+                }
+              },
+              items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                      (e) => DropdownMenuItem<Language>(
+                            value: e,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  e.flag,
+                                  style: const TextStyle(fontSize: 30),
+                                ),
+                                Text(e.name)
+                              ],
+                            ),
+                          ))
+                  .toList(),
+            ),
+          )
+        ],
       ),
       body: BlocBuilder<DrawerCubit, int>(
         builder: (context, state) {
@@ -76,7 +143,7 @@ class _HomePage extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: const Text('Note Management System'),
+              accountName: Text(translation(context).note_manager),
               accountEmail: Text(user.email!),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
