@@ -3,26 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_state.dart';
 import 'package:note_management_system_v2/models/status.dart';
+import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/repository/status_repository.dart';
 
-class StatusScreen extends StatelessWidget {
-  const StatusScreen({Key? key}) : super(key: key);
+class StatusScreen extends StatefulWidget {
+  final User user;
+  const StatusScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const _StatusHome();
-  }
+  State<StatusScreen> createState() => _StatusScreenState();
 }
 
-class _StatusHome extends StatefulWidget {
-  const _StatusHome({Key? key}) : super(key: key);
-
-  @override
-  State<_StatusHome> createState() => _StatusHomeState();
-}
-
-class _StatusHomeState extends State<_StatusHome> {
-  final statusCubit = StatusCubit(StatusRepository(email: 'kyle@r2s.com.vn'));
+class _StatusScreenState extends State<StatusScreen> {
+  late final StatusCubit statusCubit;
   final _keyForm = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   bool isDuplicate = false;
@@ -31,6 +24,7 @@ class _StatusHomeState extends State<_StatusHome> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    statusCubit = StatusCubit(StatusRepository(email: widget.user.email!));
     statusCubit.getAllStatus();
   }
 
