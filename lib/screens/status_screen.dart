@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_state.dart';
 import 'package:note_management_system_v2/models/status.dart';
@@ -42,7 +43,7 @@ class _StatusScreenState extends State<StatusScreen> {
                   content: Text('Successfully insert ${state.status.name}')));
               statusCubit.getAllStatus();
               // statusCubit.addNewStatus(state.status);
-            } else if (state is ErrorSubmitStateState) {
+            } else if (state is ErrorSubmitStatusState) {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeleteStatusState) {
@@ -64,7 +65,7 @@ class _StatusScreenState extends State<StatusScreen> {
             }
           },
           buildWhen: (previous, current) {
-            if (current is ErrorSubmitStateState ||
+            if (current is ErrorSubmitStatusState ||
                 current is SuccessDeleteStatusState ||
                 current is ErrorDeleteStatusState ||
                 current is ErrorUpdateStatusState) return false;

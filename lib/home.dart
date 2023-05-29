@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
 class _HomePage extends StatelessWidget {
   final User user;
 
-  _HomePage({super.key, required this.user}) ;
+  _HomePage({super.key, required this.user});
 
   final List<String> titles = [
     'Dashboard Form',
@@ -42,16 +42,20 @@ class _HomePage extends StatelessWidget {
     'Change Password Form'
   ];
 
-
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> widgets = [
       const DashboardScreen(),
-      const CategoryScreen(),
-      PriorityScreen(user: user,),
+      CategoryScreen(
+        user: user,
+      ),
+      PriorityScreen(
+        user: user,
+      ),
       StatusScreen(user: user),
-      const NoteScreen(),
+      NoteScreen(
+        user: user,
+      ),
       const EditProfileScreen(),
       const ChangePasswordScreen(),
     ];

@@ -1,8 +1,18 @@
 
 import 'package:note_management_system_v2/models/response.dart';
 
-class Category extends Response{
-  String? id;
+class Category {
+  String? name;
+  String? createdAt;
+  String? user;
 
-  Category({required super.status, super.error, this.id});
+  Category({this.name, this.createdAt, this.user});
+
+  factory Category.fromArray(List<dynamic> list) {
+    return Category(
+      name: list[0],
+      user: list[1],
+      createdAt: list[2],
+    );
+  }
 }

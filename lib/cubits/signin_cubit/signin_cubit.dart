@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 
 class SignInCubit extends Cubit<SignInState> {
 
-
   SignInCubit() : super(SignInInitial());
 
   void login(String email, String password) async {

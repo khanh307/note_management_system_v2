@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/drawer_cubit/drawer_cubit.dart';
+import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/home.dart';
 import 'package:note_management_system_v2/models/user.dart';
+import 'package:note_management_system_v2/screens/signin_screen.dart';
 import 'package:note_management_system_v2/screens/signup_screen.dart';
 
 void main() {
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SignUpPage());
+        home: const SignInPage()
+    );
   }
 }

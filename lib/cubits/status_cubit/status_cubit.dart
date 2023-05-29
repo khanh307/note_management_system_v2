@@ -25,8 +25,8 @@ class StatusCubit extends Cubit<StatusState> {
       var result = await _statusRepository.createStatus(status);
       if (result.status == 1) {
         emit(SuccessSubmitStatusState(status));
-      } else if (result.status == -1 && result.status == 2) {
-        emit(ErrorSubmitStateState('* Please enter a different name, this name already exists'));
+      } else if (result.status == -1 && result.error == 2) {
+        emit(ErrorSubmitStatusState('* Please enter a different name, this name already exists'));
       }
     } catch (e) {
       emit(FailureStatusState(e.toString()));

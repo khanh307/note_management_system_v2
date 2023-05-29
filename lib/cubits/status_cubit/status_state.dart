@@ -34,10 +34,10 @@ class SuccessSubmitStatusState extends StatusState {
   SuccessSubmitStatusState(this.status);
 }
 
-class ErrorSubmitStateState extends StatusState {
+class ErrorSubmitStatusState extends StatusState {
   String message;
 
-  ErrorSubmitStateState(this.message);
+  ErrorSubmitStatusState(this.message);
 }
 
 class SuccessUpdateStatusState extends StatusState {
