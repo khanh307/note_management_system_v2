@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/drawer_cubit/drawer_cubit.dart';
-import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/screens/category_screen.dart';
 import 'package:note_management_system_v2/screens/change_password_screen.dart';
