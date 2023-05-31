@@ -83,21 +83,17 @@ class _NoteScreenState extends State<NoteScreen> {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeleteNoteState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Successfully delete status')));
+              showSnackBar(context, 'Successfully delete note');
               // noteCubit.getAllNotes();
             } else if (state is ErrorDeleteNoteState) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             } else if (state is SuccessUpdateNoteState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Successfully update a category!')));
+              showSnackBar(context, 'Successfully update a note!');
               noteCubit.getAllNotes();
             } else if (state is ErrorUpdateNoteState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             }
           },
           buildWhen: (previous, current) {
@@ -141,7 +137,6 @@ class _NoteScreenState extends State<NoteScreen> {
                       if (directory == DismissDirection.startToEnd) {
                         return _deleteNote(listNotes[index].name!);
                       } else if (directory == DismissDirection.endToStart) {
-                        debugPrint('endToStart');
                         await _showDialog(context, listNotes[index]);
                         return false;
                       }

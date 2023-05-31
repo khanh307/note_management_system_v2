@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/category_cubit/category_cubit.dart';
 import 'package:note_management_system_v2/cubits/category_cubit/category_state.dart';
 import 'package:note_management_system_v2/models/category.dart';
@@ -22,7 +23,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     categoryCubit = CategoryCubit(CategoryRepository(email: widget.user.email!));
     categoryCubit.getAllCategory();
@@ -38,29 +38,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
             if (state is SuccessSubmitCategoryState) {
               Navigator.of(context).pop();
               _nameController.clear();
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Successfully insert ${state.category.name}')));
+              showSnackBar(context, 'Successfully insert ${state.category.name}');
               categoryCubit.getAllCategory();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitCategoryState) {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeleteCategoryState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Successfully delete status')));
-              categoryCubit.getAllCategory();
+              showSnackBar(context, 'Successfully delete status');
+              // categoryCubit.getAllCategory();
             } else if (state is ErrorDeleteCategoryState) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             } else if (state is SuccessUpdateCategoryState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Successfully update a category!')));
+              showSnackBar(context, 'Successfully update a category!');
               categoryCubit.getAllCategory();
             } else if (state is ErrorUpdateCategoryState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             }
           },
           buildWhen: (previous, current) {
@@ -104,8 +99,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                     confirmDismiss: (directory) async {
                       if (directory == DismissDirection.startToEnd) {
-                        await _deleteStatus(listCategory[index].name!);
-                        return false;
+                        return await _deleteStatus(listCategory[index].name!);
                       } else if (directory == DismissDirection.endToStart) {
                         await _showDialog(context, listCategory[index]);
                         return false;
@@ -134,26 +128,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Future<void> _deleteStatus(String name) async {
+  Future<bool> _deleteStatus(String name) async {
     final AlertDialog dialog = AlertDialog(
       title: const Text('Delete'),
       content: Text('* You want to delete this $name? Yes/No?'),
       actions: [
         ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, false);
             },
             child: const Text('No')),
         ElevatedButton(
             onPressed: () async {
               categoryCubit.deleteCategory(name);
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             },
             child: const Text('Yes')),
       ],
     );
 
-    showDialog(
+    return await showDialog(
         context: context,
         useRootNavigator: false,
         builder: (context) => dialog);

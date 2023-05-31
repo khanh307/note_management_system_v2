@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/priority_cubit/priority_cubit.dart';
 import 'package:note_management_system_v2/cubits/priority_cubit/priority_state.dart';
 import 'package:note_management_system_v2/models/priority.dart';
@@ -40,28 +41,24 @@ class _PriorityScreenState extends State<PriorityScreen> {
             if (state is SuccessSubmitPriorityState) {
               _nameController.clear();
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Successfully insert ${state.priority.name}')));
+              showSnackBar(context, 'Successfully insert ${state.priority.name}');
               priorityCubit.getAllPriorities();
             } else if (state is ErrorSubmitStateState) {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeletePriorityState) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Successfully delete priority')));
+              showSnackBar(context, 'Successfully delete priority');
+
               priorityCubit.getAllPriorities();
             } else if (state is ErrorDeletePriorityState) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             } else if (state is SuccessUpdatePriorityState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Successfully update a category!')));
+              showSnackBar(context, 'Successfully update a priority!');
               priorityCubit.getAllPriorities();
             } else if (state is ErrorUpdatePriorityState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             }
           },
           buildWhen: (previous, current) {
