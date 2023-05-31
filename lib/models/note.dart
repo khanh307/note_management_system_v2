@@ -25,8 +25,8 @@ class Note {
       priority: list[2],
       status: list[3],
       planDate: list[4],
-      createdAt: list[5],
-      user: list[6],
+      createdAt: list[6],
+      user: list[5],
     );
   }
 }

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 class MyDropdownButton extends StatefulWidget {
   final String? hint;
-  final List<String> dropdownItems;
-  final dynamic dropdownValue;
+  final List<String?> dropdownItems;
+  final String? dropdownValue;
   final Function onChange;
   final Function validator;
 
-  const MyDropdownButton({super.key, this.hint, required this.dropdownItems, this.dropdownValue,
+  const MyDropdownButton({super.key, this.hint, required this.dropdownItems, required this.dropdownValue,
       required this.onChange, required this.validator});
 
   @override
@@ -33,7 +33,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
             .map<DropdownMenuItem<dynamic>>((item) {
           return DropdownMenuItem<dynamic>(
             value: item,
-            child: Text(item),
+            child: Text(item!),
           );
         }).toList(),
         validator: (value) =>

@@ -24,7 +24,7 @@ class NoteRepository {
     if (parsed['status'] == 1 && parsed['data'] != null) {
       Response result = Response.fromJson(parsed);
       final list =
-          result.data?.map<Note>((status) => Note.fromArray(status)).toList();
+          result.data?.map<Note>((note) => Note.fromArray(note)).toList();
 
       return list;
     } else {

@@ -49,7 +49,7 @@ class _StatusScreenState extends State<StatusScreen> {
             } else if (state is SuccessDeleteStatusState) {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Successfully delete status')));
-              statusCubit.getAllStatus();
+              // statusCubit.getAllStatus();
             } else if (state is ErrorDeleteStatusState) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(state.message)));
@@ -105,8 +105,7 @@ class _StatusScreenState extends State<StatusScreen> {
                     ),
                     confirmDismiss: (directory) async {
                       if (directory == DismissDirection.startToEnd) {
-                        await _deleteStatus(listStatus[index].name!);
-                        return false;
+                        return _deleteStatus(listStatus[index].name!);
                       } else if (directory == DismissDirection.endToStart) {
                         await _showDialog(context, listStatus[index]);
                         return false;
@@ -135,26 +134,26 @@ class _StatusScreenState extends State<StatusScreen> {
     );
   }
 
-  Future<void> _deleteStatus(String name) async {
+  Future<bool> _deleteStatus(String name) async {
     final AlertDialog dialog = AlertDialog(
       title: const Text('Delete'),
       content: Text('* You want to delete this $name? Yes/No?'),
       actions: [
         ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, false);
             },
             child: const Text('No')),
         ElevatedButton(
-            onPressed: () async {
+            onPressed: () {
               statusCubit.deleteStatus(name);
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             },
             child: const Text('Yes')),
       ],
     );
 
-    showDialog(
+    return await showDialog(
         context: context,
         useRootNavigator: false,
         builder: (context) => dialog);

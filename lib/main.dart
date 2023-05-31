@@ -10,6 +10,7 @@ import 'package:note_management_system_v2/screens/signup_screen.dart';
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -17,11 +18,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SignInPage()
-    );
+        home: HomeScreen(
+          user: User(
+              email: 'kyle@r2s.com.vn',
+              password: '123',
+              lastname: 'Le',
+              firstname: 'Ky'),
+        ));
   }
 }
