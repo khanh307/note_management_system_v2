@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/Flutter/note_management_system_v2/linux"
+    "cmake.sourceDirectory": "D:/Flutter/note_management_system_v2/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

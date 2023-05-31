@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/drawer_cubit/drawer_cubit.dart';
-import 'package:note_management_system_v2/models/user.dart';
+import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/screens/category_screen.dart';
 import 'package:note_management_system_v2/screens/change_password_screen.dart';
 import 'package:note_management_system_v2/screens/dashboard_screen.dart';
@@ -11,25 +11,26 @@ import 'package:note_management_system_v2/screens/priority_screen.dart';
 import 'package:note_management_system_v2/screens/status_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final User? user;
+  final Account? account;
+  final bool isGoogleSignIn; // Thêm biến để xác định phương thức đăng nhập
 
-  const HomeScreen({super.key, this.user});
+  const HomeScreen({Key? key, this.account, this.isGoogleSignIn = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DrawerCubit(),
-      child: _HomePage(
-        user: user!,
-      ),
-    );
+        create: (context) => DrawerCubit(),
+        child: _HomePage(account: account!, isGoogleSignIn: isGoogleSignIn));
   }
 }
 
 class _HomePage extends StatelessWidget {
-  final User user;
+  final Account account;
+  final bool isGoogleSignIn; // Thêm biến để xác định phương thức đăng nhập
 
-  _HomePage({Key? key, required this.user}) : super(key: key);
+  _HomePage({Key? key, required this.account, required this.isGoogleSignIn})
+      : super(key: key);
 
   final List<String> titles = [
     'Dashboard Form',
@@ -74,10 +75,12 @@ class _HomePage extends StatelessWidget {
           children: [
             UserAccountsDrawerHeader(
               accountName: const Text('Note Management System'),
-              accountEmail: Text(user.email!),
+              accountEmail: Text(account.email!),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
-                  child: Image.asset('assets/images/profile.png'),
+                  child: account.photoUrl != null
+                      ? Image.network(account.photoUrl!)
+                      : Image.asset('assets/images/profile.png'),
                 ),
               ),
               decoration: const BoxDecoration(
@@ -137,13 +140,16 @@ class _HomePage extends StatelessWidget {
                 context.read<DrawerCubit>().closeDrawer(context);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.send),
-              title: const Text('Change password'),
-              onTap: () {
-                context.read<DrawerCubit>().changeItem(6);
-                context.read<DrawerCubit>().closeDrawer(context);
-              },
+            Visibility(
+              visible: !isGoogleSignIn,
+              child: ListTile(
+                leading: const Icon(Icons.send),
+                title: const Text('Change password'),
+                onTap: () {
+                  context.read<DrawerCubit>().changeItem(6);
+                  context.read<DrawerCubit>().closeDrawer(context);
+                },
+              ),
             ),
           ],
         ),

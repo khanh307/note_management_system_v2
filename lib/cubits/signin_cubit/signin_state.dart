@@ -1,3 +1,4 @@
+import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/models/user.dart';
 
 abstract class SignInState {}
@@ -7,9 +8,9 @@ class SignInInitial extends SignInState {}
 class SignInLoadingState extends SignInState {}
 
 class SignInSuccessState extends SignInState {
-  User user;
+  Account account;
 
-  SignInSuccessState(this.user);
+  SignInSuccessState(this.account);
 }
 
 class SignInErrorState extends SignInState {

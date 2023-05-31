@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_state.dart';
+
 import 'package:note_management_system_v2/home.dart';
-import 'package:note_management_system_v2/models/user.dart';
+import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/screens/signup_screen.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
 
@@ -18,6 +21,8 @@ class _SignInHomeState extends State<SignInHome> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  bool isGoogleSignIn = false;
 
   bool _obscureText = true;
 
@@ -43,7 +48,8 @@ class _SignInHomeState extends State<SignInHome> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => HomeScreen(
-                            user: state.user,
+                            account: state.account,
+                            isGoogleSignIn: isGoogleSignIn,
                           )),
                   (route) => false,
                 );
@@ -152,8 +158,8 @@ class _SignInHomeState extends State<SignInHome> {
 
                             final encryptPasswords = hashPassword(password);
 
-                            context.read<SignInCubit>().login(
-                                User(email: email, password: encryptPasswords));
+                            context.read<SignInCubit>().login(Account(
+                                email: email, password: encryptPasswords));
                           }
                         },
                         child: const Text(
@@ -192,7 +198,40 @@ class _SignInHomeState extends State<SignInHome> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          GoogleSignIn().signIn().then((value) {
+                            if (value != null) {
+                              isGoogleSignIn = true;
+
+                              String firstname = '';
+                              String lastname = '';
+                              String photoUrl = '';
+
+                              if (value.displayName != null) {
+                                List<String> nameArray =
+                                    value.displayName!.split(" ");
+                                if (nameArray.isNotEmpty) {
+                                  firstname = nameArray.first;
+                                  if (nameArray.length > 1) {
+                                    lastname = nameArray.sublist(1).join(" ");
+                                  }
+                                }
+                              }
+
+                              photoUrl = value.photoUrl ?? '';
+
+                              Account account = Account(
+                                email: value.email,
+                                password: hashPassword(" "),
+                                fristname: firstname,
+                                lastname: lastname,
+                                photoUrl: photoUrl,
+                              );
+
+                              context.read<SignInCubit>().signInGooGle(account);
+                            }
+                          });
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
@@ -202,9 +241,11 @@ class _SignInHomeState extends State<SignInHome> {
                           children: [
                             Image.asset(
                               'assets/images/google_logo.png',
-                              height: 24,
+                              height: 30,
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             const Text('Sign In with Google'),
                           ],
                         ),
