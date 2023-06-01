@@ -21,6 +21,7 @@ class StatusRepository {
 
   Future<List<Status>?> getAllProfile() async {
     final uri = Uri.parse('$urlRead$email');
+    debugPrint(uri.toString());
     final response = await http.get(uri);
     final parsed = jsonDecode(response.body);
 

@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/category_cubit/category_cubit.dart';
 import 'package:note_management_system_v2/cubits/category_cubit/category_state.dart';
+import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/models/category.dart';
 import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/repository/category_repository.dart';
 
 class CategoryScreen extends StatefulWidget {
-  final User user;
+  final Account user;
   const CategoryScreen({Key? key, required this.user}) : super(key: key);
 
   @override

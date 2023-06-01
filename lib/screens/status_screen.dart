@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_state.dart';
+import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/models/status.dart';
 import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/repository/status_repository.dart';
 
 class StatusScreen extends StatefulWidget {
-  final User user;
+  final Account user;
   const StatusScreen({Key? key, required this.user}) : super(key: key);
 
   @override

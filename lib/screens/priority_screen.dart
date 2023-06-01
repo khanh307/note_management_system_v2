@@ -4,12 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/priority_cubit/priority_cubit.dart';
 import 'package:note_management_system_v2/cubits/priority_cubit/priority_state.dart';
+import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/models/priority.dart';
 import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/repository/priority_repository.dart';
 
 class PriorityScreen extends StatefulWidget {
-  final User user;
+  final Account user;
 
   const PriorityScreen({Key? key, required this.user}) : super(key: key);
 

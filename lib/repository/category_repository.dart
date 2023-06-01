@@ -25,7 +25,7 @@ class CategoryRepository {
     final response = await http.get(uri);
     final parsed = jsonDecode(response.body);
 
-    if (parsed['status'] == 1 && parsed['data'] != null) {
+    if (parsed['status'] == 1) {
       Response result = Response.fromJson(parsed);
       final list = result.data
           ?.map<Category>((status) => Category.fromArray(status))

@@ -5,6 +5,7 @@ import 'package:note_management_system_v2/component/my_dropdown_button.dart';
 import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/note_cubit/note_cubit.dart';
 import 'package:note_management_system_v2/cubits/note_cubit/note_state.dart';
+import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/models/category.dart';
 import 'package:note_management_system_v2/models/note.dart';
 import 'package:note_management_system_v2/models/priority.dart';
@@ -17,7 +18,7 @@ import 'package:note_management_system_v2/repository/status_repository.dart';
 import 'package:note_management_system_v2/validator/note_validator.dart';
 
 class NoteScreen extends StatefulWidget {
-  final User user;
+  final Account user;
 
   const NoteScreen({Key? key, required this.user}) : super(key: key);
 
@@ -34,25 +35,26 @@ class _NoteScreenState extends State<NoteScreen> {
   late final NoteCubit noteCubit;
   final _keyForm = GlobalKey<FormState>();
   bool isDuplicate = false;
-  List<Category>? _categories;
-  List<PriorityModel>? _priorities;
-  List<Status>? _status;
+  List<Category> _categories = [];
+  List<PriorityModel> _priorities = [];
+  List<Status> _status = [];
   DateTime? _dateTime;
 
   Future<void> getAllData() async {
     _categories =
-        await CategoryRepository(email: widget.user.email!).getAllCategory();
-    _priorities =
-        await PriorityRepository(email: widget.user.email!).getAllPriorities();
-    _status = await StatusRepository(email: widget.user.email!).getAllProfile();
+        (await CategoryRepository(email: widget.user.email!).getAllCategory())!;
+    _priorities = (await PriorityRepository(email: widget.user.email!)
+        .getAllPriorities())!;
+    _status =
+        (await StatusRepository(email: widget.user.email!).getAllProfile())!;
   }
 
   @override
   void initState() {
     super.initState();
     noteCubit = NoteCubit(NoteRepository(email: widget.user.email!));
-    noteCubit.getAllNotes();
     getAllData();
+    noteCubit.getAllNotes();
   }
 
   @override
@@ -67,6 +69,7 @@ class _NoteScreenState extends State<NoteScreen> {
             ],
           ),
         );
+
     return Scaffold(
       body: BlocProvider.value(
         value: noteCubit,
