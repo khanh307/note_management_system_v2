@@ -1,3 +1,13 @@
 {
-    "note_manager":"Note Management System"
+    "note_manager":"Note Management System",
+    "register":"Sign Up",
+    "passHint":"Password",
+    "fName":"First Name",
+    "lName":"Last Name",
+    "createAcc":"Create Account",
+    "hadAcc":"Already have an account?",
+    "login":"Sign In",
+    "signInAcc":"Sign In Your Account",
+    "hadNoAcc":"Do not have account?",
+    "signInGG":"Sign In With Google"
 }

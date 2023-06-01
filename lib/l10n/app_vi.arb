@@ -1,3 +1,13 @@
 {
-    "note_manager":"Quản lý ghi chú"
+    "note_manager":"Quản lý ghi chú",
+    "register":"Đăng Kí",
+    "passHint":"Mật Khẩu",
+    "fName":"Nhập Họ",
+    "lName":"Nhập Tên",
+    "createAcc":"Tạo Tài Khoản",
+    "hadAcc":"Bạn đã có tài khoản?",
+    "login":"Đăng nhập",
+    "signInAcc":"Đăng nhập tài khoản của bạn",
+    "hadNoAcc":"Bạn chưa có tài khoản?",
+    "signInGG":"Đăng nhập với Google"
 }
