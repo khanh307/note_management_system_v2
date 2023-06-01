@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:note_management_system_v2/cubits/drawer_cubit/drawer_cubit.dart';
 import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/screens/category_screen.dart';
@@ -8,6 +9,7 @@ import 'package:note_management_system_v2/screens/dashboard_screen.dart';
 import 'package:note_management_system_v2/screens/edit_profile_screen.dart';
 import 'package:note_management_system_v2/screens/note_screen.dart';
 import 'package:note_management_system_v2/screens/priority_screen.dart';
+import 'package:note_management_system_v2/screens/signin_screen.dart';
 import 'package:note_management_system_v2/screens/status_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -156,6 +158,20 @@ class _HomePage extends StatelessWidget {
                   context.read<DrawerCubit>().closeDrawer(context);
                 },
               ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                if (isGoogleSignIn) {
+                  GoogleSignIn().signOut();
+                }
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignInHome()),
+                  (route) => false,
+                );
+              },
             ),
           ],
         ),
