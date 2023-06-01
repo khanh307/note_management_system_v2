@@ -241,10 +241,10 @@ class _SignInHomeState extends State<SignInHome> {
                           children: [
                             Image.asset(
                               'assets/images/google_logo.png',
-                              height: 30,
+                              height: 40,
                             ),
                             const SizedBox(
-                              width: 8,
+                              width: 5,
                             ),
                             const Text('Sign In with Google'),
                           ],
