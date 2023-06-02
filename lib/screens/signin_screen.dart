@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -196,7 +198,6 @@ class _SignInHomeState extends State<SignInHome> {
                               setState(() {
                                 _isCheckRemember = value ?? false;
                               });
-                              _saveRemember(_isCheckRemember);
                             },
                           ),
                           const Text('Remember me')
@@ -216,6 +217,8 @@ class _SignInHomeState extends State<SignInHome> {
                             final password = _passwordController.text;
 
                             final encryptPasswords = hashPassword(password);
+
+                            _saveRemember(_isCheckRemember);
 
                             context.read<SignInCubit>().login(
                                   Account(
@@ -278,6 +281,8 @@ class _SignInHomeState extends State<SignInHome> {
                                   }
                                 }
                               }
+
+                              _saveRemember(_isCheckRemember);
 
                               photoUrl = value.photoUrl ?? '';
 
