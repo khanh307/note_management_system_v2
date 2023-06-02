@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_state.dart';
 import 'package:note_management_system_v2/cubits/signup_cubit/signup_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
-import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/repository/api_constant.dart';
 
 import 'package:note_management_system_v2/repository/signin_repository.dart';
