@@ -138,7 +138,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     ),
                     confirmDismiss: (directory) async {
                       if (directory == DismissDirection.startToEnd) {
-                        return _deleteNote(listNotes[index].name!);
+                        return _deleteNote(listNotes[index]);
                       } else if (directory == DismissDirection.endToStart) {
                         await _showDialog(context, listNotes[index]);
                         return false;
@@ -191,35 +191,41 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Future<bool> _deleteNote(String name) async {
-    final AlertDialog dialog = AlertDialog(
-      title: const Text('Delete'),
-      content: Text('* You want to delete this $name? Yes/No?'),
-      actions: [
-        ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: const Text('No')),
-        ElevatedButton(
-            onPressed: () async {
-              noteCubit.deleteNote(name);
-              Navigator.pop(context, true);
-            },
-            child: const Text('Yes')),
-      ],
-    );
+  Future<bool> _deleteNote(Note note) async {
+    if (_checkNoteDone(note)) {
+      final AlertDialog dialog = AlertDialog(
+        title: const Text('Delete'),
+        content: Text('* You want to delete this ${note.name}? Yes/No?'),
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('No')),
+          ElevatedButton(
+              onPressed: () async {
+                noteCubit.deleteNote(note.name!);
+                Navigator.pop(context, true);
+              },
+              child: const Text('Yes')),
+        ],
+      );
 
-    return await showDialog(
-        context: context,
-        useRootNavigator: false,
-        builder: (context) => dialog);
+      return await showDialog(
+          context: context,
+          useRootNavigator: false,
+          builder: (context) => dialog);
+    } else {
+      showSnackBar(context,
+          '* You can\'t delete ${note.name} because it has not been more than 6 months ');
+      return false;
+    }
   }
 
   Future<void> _showDialog(BuildContext context, Note? note) async {
     if (note != null) {
       _nameController.text = note.name!;
-      // _dateTime = DateTime.parse(note.planDate!);
+      _dateTime = DateFormat('dd/MM/yyyy').parse(note.planDate!);
       _dateController.text = note.planDate!;
       dropdownCategoryValue = note.category!;
       dropdownStatusValue = note.status!;
@@ -378,5 +384,19 @@ class _NoteScreenState extends State<NoteScreen> {
 
   String _formatDate(DateTime date) {
     return DateFormat('dd/MM/yyyy').format(date);
+  }
+
+  bool _checkNoteDone(Note note) {
+    if (note.status.toString().toLowerCase() == 'done') {
+      DateTime dateDone = DateFormat('dd/MM/yyyy').parse(note.planDate!);
+      DateTime endDate =
+          DateTime(dateDone.year, dateDone.month + 6, dateDone.day);
+      if (DateTime.now().difference(endDate).inDays < 0) {
+        return false;
+      }
+    } else {
+      return true;
+    }
+    return true;
   }
 }

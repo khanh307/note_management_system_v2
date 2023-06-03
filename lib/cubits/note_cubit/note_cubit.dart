@@ -61,4 +61,6 @@ class NoteCubit extends Cubit<NoteState> {
       emit(FailureNoteState(e.toString()));
     }
   }
+
+
 }
