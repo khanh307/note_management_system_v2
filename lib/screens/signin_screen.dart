@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +14,8 @@ import 'package:note_management_system_v2/models/account.dart';
 
 import 'package:note_management_system_v2/screens/signup_screen.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
+import 'package:note_management_system_v2/utils/snackbar/snack_bar.dart';
+import 'package:note_management_system_v2/utils/validate/validate_english.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInHome extends StatefulWidget {
@@ -23,7 +26,7 @@ class SignInHome extends StatefulWidget {
 }
 
 class _SignInHomeState extends State<SignInHome> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKeySignIn = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -96,11 +99,7 @@ class _SignInHomeState extends State<SignInHome> {
               });
             } else if (state is SignInErrorState) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.errorMessage),
-                  ),
-                );
+               showSnackBar(context, state.errorMessage);
               });
             }
           },
@@ -111,7 +110,7 @@ class _SignInHomeState extends State<SignInHome> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     const Text(
                       'Sign In',
                       style: TextStyle(
@@ -147,16 +146,17 @@ class _SignInHomeState extends State<SignInHome> {
                         horizontal: 20,
                       ),
                       child: Form(
-                          key: _formKey,
+                          key: _formKeySignIn,
                           child: Column(
                             children: [
                               TextFormField(
                                 controller: _emailController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Email',
+                                  labelText: 'Enter your email',
                                   prefixIcon: Icon(Icons.email),
                                   border: OutlineInputBorder(),
                                 ),
+                                validator: ValidateEnglish.valiEmailSignIn,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -165,7 +165,7 @@ class _SignInHomeState extends State<SignInHome> {
                                 controller: _passwordController,
                                 obscureText: _obscureText,
                                 decoration: InputDecoration(
-                                  labelText: 'Password',
+                                  labelText: 'Enter your password',
                                   prefixIcon: const Icon(Icons.lock),
                                   border: const OutlineInputBorder(),
                                   suffixIcon: GestureDetector(
@@ -180,6 +180,7 @@ class _SignInHomeState extends State<SignInHome> {
                                     ),
                                   ),
                                 ),
+                                // validator: ValidateEnglish.valiPasswordSignIn,
                               ),
                             ],
                           )),
@@ -212,7 +213,7 @@ class _SignInHomeState extends State<SignInHome> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKeySignIn.currentState!.validate()) {
                             final email = _emailController.text;
                             final password = _passwordController.text;
 
@@ -226,6 +227,12 @@ class _SignInHomeState extends State<SignInHome> {
                                 );
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                        ),
                         child: const Text(
                           'Sign In',
                           style: TextStyle(color: Colors.white, fontSize: 20),
@@ -282,8 +289,6 @@ class _SignInHomeState extends State<SignInHome> {
                                 }
                               }
 
-                              _saveRemember(_isCheckRemember);
-
                               photoUrl = value.photoUrl ?? '';
 
                               Account account = Account(
@@ -299,6 +304,10 @@ class _SignInHomeState extends State<SignInHome> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.all(5),
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
                         ),

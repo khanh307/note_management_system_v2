@@ -13,17 +13,18 @@ import 'package:note_management_system_v2/screens/signin_screen.dart';
 import 'package:note_management_system_v2/screens/status_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final Account? account;
+  final Account account;
   final bool isGoogleSignIn; // Thêm biến để xác định phương thức đăng nhập
 
-  const HomeScreen({Key? key, this.account, this.isGoogleSignIn = false})
+  const HomeScreen(
+      {Key? key, required this.account, this.isGoogleSignIn = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => DrawerCubit(),
-        child: _HomePage(account: account!, isGoogleSignIn: isGoogleSignIn));
+        child: _HomePage(account: account, isGoogleSignIn: isGoogleSignIn));
   }
 }
 
@@ -44,18 +45,18 @@ class _HomePage extends StatelessWidget {
     'Change Password Form'
   ];
 
-  final List<Widget> widgets = [
-    const DashboardScreen(),
-    const CategoryScreen(),
-    const PriorityScreen(),
-    const StatusScreen(),
-    const NoteScreen(),
-    const EditProfileScreen(),
-    const ChangePasswordScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Widget> widgets = [
+      const DashboardScreen(),
+      const CategoryScreen(),
+      const PriorityScreen(),
+      const StatusScreen(),
+      const NoteScreen(),
+      EditProfileScreen(user: account),
+      ChangePasswordScreen(user: account),
+    ];
+
     return Scaffold(
       endDrawerEnableOpenDragGesture: false,
       appBar: AppBar(
@@ -134,13 +135,16 @@ class _HomePage extends StatelessWidget {
               margin: const EdgeInsets.all(15),
               child: const Text('Account'),
             ),
-            ListTile(
-              leading: const Icon(Icons.share),
-              title: const Text('Edit Profile'),
-              onTap: () {
-                context.read<DrawerCubit>().changeItem(5);
-                context.read<DrawerCubit>().closeDrawer(context);
-              },
+            Visibility(
+              visible: !isGoogleSignIn,
+              child: ListTile(
+                leading: const Icon(Icons.share),
+                title: const Text('Edit Profile'),
+                onTap: () {
+                  context.read<DrawerCubit>().changeItem(5);
+                  context.read<DrawerCubit>().closeDrawer(context);
+                },
+              ),
             ),
             Visibility(
               visible: !isGoogleSignIn,
