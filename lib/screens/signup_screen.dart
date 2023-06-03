@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/signup_cubit/signup_cubit.dart';
 import 'package:note_management_system_v2/cubits/signup_cubit/signup_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
@@ -32,7 +33,7 @@ class _SignUpHomeState extends State<SignUpHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: Text(translation(context).register),
       ),
       body: BlocProvider<SignUpCubit>(
         create: (_) => SignUpCubit(),
@@ -66,9 +67,9 @@ class _SignUpHomeState extends State<SignUpHome> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Sign Up',
-                      style: TextStyle(
+                    Text(
+                      translation(context).register,
+                      style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                           fontSize: 30,
@@ -84,9 +85,9 @@ class _SignUpHomeState extends State<SignUpHome> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Create Account',
-                      style: TextStyle(
+                    Text(
+                      translation(context).regisQuote,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -118,7 +119,7 @@ class _SignUpHomeState extends State<SignUpHome> {
                               controller: _passwordController,
                               obscureText: _obscureText,
                               decoration: InputDecoration(
-                                labelText: 'Password',
+                                labelText: translation(context).passHint,
                                 prefixIcon: const Icon(Icons.lock),
                                 border: const OutlineInputBorder(),
                                 suffixIcon: GestureDetector(
@@ -139,10 +140,10 @@ class _SignUpHomeState extends State<SignUpHome> {
                             ),
                             TextFormField(
                               controller: _firstNameController,
-                              decoration: const InputDecoration(
-                                labelText: 'First Name',
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: translation(context).fName,
+                                prefixIcon: const Icon(Icons.person),
+                                border: const OutlineInputBorder(),
                               ),
                             ),
                             const SizedBox(
@@ -150,10 +151,10 @@ class _SignUpHomeState extends State<SignUpHome> {
                             ),
                             TextFormField(
                               controller: _lastNameController,
-                              decoration: const InputDecoration(
-                                labelText: 'Last Name',
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: translation(context).lName,
+                                prefixIcon: const Icon(Icons.person),
+                                border: const OutlineInputBorder(),
                               ),
                             ),
                           ],
@@ -181,9 +182,10 @@ class _SignUpHomeState extends State<SignUpHome> {
                               fristname: firstName,
                               lastname: lastName));
                         },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        child: Text(
+                          translation(context).register,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 20),
                         ),
                       ),
                     ),
@@ -195,8 +197,8 @@ class _SignUpHomeState extends State<SignUpHome> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Already have an account?',
+                          Text(
+                            translation(context).hadAcc,
                             style: TextStyle(fontSize: 16),
                           ),
                           TextButton(
@@ -207,7 +209,7 @@ class _SignUpHomeState extends State<SignUpHome> {
                                     builder: (_) => const SignInHome()),
                               );
                             },
-                            child: const Text('Sign In'),
+                            child: Text(translation(context).login),
                           ),
                         ],
                       ),

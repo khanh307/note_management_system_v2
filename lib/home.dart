@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:note_management_system_v2/Localization/language.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/drawer_cubit/drawer_cubit.dart';
+import 'package:note_management_system_v2/main.dart';
 import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/screens/category_screen.dart';
 import 'package:note_management_system_v2/screens/change_password_screen.dart';
@@ -34,20 +37,22 @@ class _HomePage extends StatelessWidget {
   _HomePage({Key? key, required this.account, required this.isGoogleSignIn})
       : super(key: key);
 
-  final List<String> titles = [
-    'Dashboard Form',
-    'Category Form',
-    'Priority Form',
-    'Status Form',
-    'Note Form',
-    'Edit Profile Form',
-    'Change Password Form'
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<String> titles = [
+      translation(context).dashboard,
+      translation(context).category,
+      translation(context).prio,
+      translation(context).status,
+      translation(context).note,
+      translation(context).editProfile,
+      translation(context).changePass,
+    ];
+
     final List<Widget> widgets = [
-      const DashboardScreen(),
+      DashboardScreen(
+        user: account,
+      ),
       CategoryScreen(
         user: account,
       ),
@@ -70,6 +75,41 @@ class _HomePage extends StatelessWidget {
             return Text(titles[state]);
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: DropdownButton<Language>(
+              underline: const SizedBox(),
+              icon: const Icon(
+                Icons.g_translate,
+                color: Colors.white,
+              ),
+              onChanged: (Language? language) async {
+                if (language != null) {
+                  Locale localex = await setLocale(language.languageCode);
+                  MyApp.setLocale(context, localex);
+                }
+              },
+              items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: const TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          )
+        ],
       ),
       body: BlocBuilder<DrawerCubit, int>(
         builder: (context, state) {
@@ -82,7 +122,7 @@ class _HomePage extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: const Text('Note Management System'),
+              accountName: Text(translation(context).note_system),
               accountEmail: Text(account.email!),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
@@ -97,7 +137,7 @@ class _HomePage extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: const Text('Home'),
+              title: Text(translation(context).home),
               onTap: () {
                 context.read<DrawerCubit>().changeItem(0);
                 context.read<DrawerCubit>().closeDrawer(context);
@@ -105,7 +145,7 @@ class _HomePage extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Category'),
+              title: Text(translation(context).category),
               onTap: () {
                 context.read<DrawerCubit>().changeItem(1);
                 context.read<DrawerCubit>().closeDrawer(context);
@@ -113,7 +153,7 @@ class _HomePage extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.video_collection_rounded),
-              title: const Text('Priority'),
+              title: Text(translation(context).prio),
               onTap: () {
                 context.read<DrawerCubit>().changeItem(2);
                 context.read<DrawerCubit>().closeDrawer(context);
@@ -121,7 +161,7 @@ class _HomePage extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.restart_alt),
-              title: const Text('Status'),
+              title: Text(translation(context).status),
               onTap: () {
                 context.read<DrawerCubit>().changeItem(3);
                 context.read<DrawerCubit>().closeDrawer(context);
@@ -129,7 +169,7 @@ class _HomePage extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.note),
-              title: const Text('Note'),
+              title: Text(translation(context).note),
               onTap: () {
                 context.read<DrawerCubit>().changeItem(4);
                 context.read<DrawerCubit>().closeDrawer(context);
@@ -138,11 +178,11 @@ class _HomePage extends StatelessWidget {
             const Divider(),
             Container(
               margin: const EdgeInsets.all(15),
-              child: const Text('Account'),
+              child: Text(translation(context).acc),
             ),
             ListTile(
               leading: const Icon(Icons.share),
-              title: const Text('Edit Profile'),
+              title: Text(translation(context).editProfile),
               onTap: () {
                 context.read<DrawerCubit>().changeItem(5);
                 context.read<DrawerCubit>().closeDrawer(context);
@@ -152,7 +192,7 @@ class _HomePage extends StatelessWidget {
               visible: !isGoogleSignIn,
               child: ListTile(
                 leading: const Icon(Icons.send),
-                title: const Text('Change password'),
+                title: Text(translation(context).changePass),
                 onTap: () {
                   context.read<DrawerCubit>().changeItem(6);
                   context.read<DrawerCubit>().closeDrawer(context);
@@ -161,7 +201,7 @@ class _HomePage extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
+              title: Text(translation(context).logOut),
               onTap: () {
                 if (isGoogleSignIn) {
                   GoogleSignIn().signOut();

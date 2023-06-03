@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_state.dart';
@@ -36,7 +37,7 @@ class _SignInHomeState extends State<SignInHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text(translation(context).login),
       ),
       body: BlocProvider<SignInCubit>(
         create: (_) => SignInCubit(),
@@ -72,9 +73,9 @@ class _SignInHomeState extends State<SignInHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 30),
-                    const Text(
-                      'Sign In',
-                      style: TextStyle(
+                    Text(
+                      translation(context).login,
+                      style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                           fontSize: 30,
@@ -90,9 +91,9 @@ class _SignInHomeState extends State<SignInHome> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Text(
-                      'SignIn Your Account',
-                      style: TextStyle(
+                    Text(
+                      translation(context).loginQuote,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -125,7 +126,7 @@ class _SignInHomeState extends State<SignInHome> {
                                 controller: _passwordController,
                                 obscureText: _obscureText,
                                 decoration: InputDecoration(
-                                  labelText: 'Password',
+                                  labelText: translation(context).passHint,
                                   prefixIcon: const Icon(Icons.lock),
                                   border: const OutlineInputBorder(),
                                   suffixIcon: GestureDetector(
@@ -162,9 +163,10 @@ class _SignInHomeState extends State<SignInHome> {
                                 email: email, password: encryptPasswords));
                           }
                         },
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        child: Text(
+                          translation(context).login,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 20),
                         ),
                       ),
                     ),
@@ -176,9 +178,9 @@ class _SignInHomeState extends State<SignInHome> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Does not have account?',
-                            style: TextStyle(fontSize: 16),
+                          Text(
+                            translation(context).noAcc,
+                            style: const TextStyle(fontSize: 16),
                           ),
                           TextButton(
                               onPressed: () {
@@ -188,7 +190,7 @@ class _SignInHomeState extends State<SignInHome> {
                                         builder: (_) => const SignUpHome()),
                                     (route) => false);
                               },
-                              child: const Text('SignUp')),
+                              child: Text(translation(context).register)),
                         ],
                       ),
                     ),
@@ -246,7 +248,7 @@ class _SignInHomeState extends State<SignInHome> {
                             const SizedBox(
                               width: 5,
                             ),
-                            const Text('Sign In with Google'),
+                            Text(translation(context).logGmail),
                           ],
                         ),
                       ),

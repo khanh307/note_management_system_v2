@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/component/my_dropdown_button.dart';
 import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/note_cubit/note_cubit.dart';
@@ -162,15 +163,19 @@ class _NoteScreenState extends State<NoteScreen> {
                             ],
                           ),
                           itemCard(Icons.category, listNotes[index].category,
-                              'Category'),
-                          itemCard(Icons.priority_high,
-                              listNotes[index].priority, 'Priority'),
+                              translation(context).category),
+                          itemCard(
+                              Icons.priority_high,
+                              listNotes[index].priority,
+                              translation(context).prio),
                           itemCard(Icons.priority_high, listNotes[index].status,
-                              'Status'),
+                              translation(context).status),
                           itemCard(Icons.date_range, listNotes[index].planDate,
-                              'Plan date'),
-                          itemCard(Icons.calendar_month_sharp,
-                              listNotes[index].createdAt, 'Created at'),
+                              translation(context).plandate),
+                          itemCard(
+                              Icons.calendar_month_sharp,
+                              listNotes[index].createdAt,
+                              translation(context).createdAt),
                         ],
                       ),
                     ),
@@ -252,9 +257,9 @@ class _NoteScreenState extends State<NoteScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Enter note name',
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: translation(context).enterName,
                     ),
                     controller: _nameController,
                     validator: (value) {
@@ -277,7 +282,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     height: 20,
                   ),
                   MyDropdownButton(
-                      hint: 'Select category',
+                      hint: translation(context).category,
                       dropdownValue: dropdownCategoryValue,
                       dropdownItems: _categories!.map((e) {
                         return e.name;
@@ -293,7 +298,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     height: 20,
                   ),
                   MyDropdownButton(
-                      hint: 'Select status',
+                      hint: translation(context).status,
                       dropdownValue: dropdownPriorityValue,
                       dropdownItems: _priorities!.map((e) {
                         return e.name;
@@ -309,7 +314,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     height: 20,
                   ),
                   MyDropdownButton(
-                      hint: 'Select priority',
+                      hint: translation(context).pickpriority,
                       dropdownValue: dropdownStatusValue,
                       dropdownItems: _status!.map((e) {
                         return e.name;
@@ -326,9 +331,9 @@ class _NoteScreenState extends State<NoteScreen> {
                   ),
                   TextFormField(
                     validator: (value) => NoteValidator.planDateValidate(value),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Select plan date'),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: translation(context).pickdate),
                     readOnly: true,
                     controller: _dateController,
                     onTap: () {
@@ -366,7 +371,9 @@ class _NoteScreenState extends State<NoteScreen> {
                               : noteCubit.updateNote(note.name!, value);
                         }
                       },
-                      child: Text((note == null) ? 'Create New' : 'Update')),
+                      child: Text((note == null)
+                          ? translation(context).createNew
+                          : translation(context).update)),
                 ],
               ),
             ),

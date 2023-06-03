@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_state.dart';
@@ -24,7 +25,6 @@ class _StatusScreenState extends State<StatusScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     statusCubit = StatusCubit(StatusRepository(email: widget.user.email!));
     statusCubit.getAllStatus();
@@ -183,9 +183,9 @@ class _StatusScreenState extends State<StatusScreen> {
               Form(
                 key: _keyForm,
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter name',
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: translation(context).enterName,
                   ),
                   controller: _nameController,
                   validator: (value) {
@@ -219,7 +219,9 @@ class _StatusScreenState extends State<StatusScreen> {
                           : statusCubit.updateStatus(status.name!, value);
                     }
                   },
-                  child: Text((status == null) ? 'Create New' : 'Update')),
+                  child: Text((status == null)
+                      ? translation(context).createNew
+                      : translation(context).update)),
             ],
           ),
         );

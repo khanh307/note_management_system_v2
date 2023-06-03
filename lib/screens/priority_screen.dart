@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/priority_cubit/priority_cubit.dart';
 import 'package:note_management_system_v2/cubits/priority_cubit/priority_state.dart';
@@ -42,7 +43,8 @@ class _PriorityScreenState extends State<PriorityScreen> {
             if (state is SuccessSubmitPriorityState) {
               _nameController.clear();
               Navigator.of(context).pop();
-              showSnackBar(context, 'Successfully insert ${state.priority.name}');
+              showSnackBar(
+                  context, 'Successfully insert ${state.priority.name}');
               priorityCubit.getAllPriorities();
             } else if (state is ErrorSubmitStateState) {
               isDuplicate = true;
@@ -183,9 +185,9 @@ class _PriorityScreenState extends State<PriorityScreen> {
               Form(
                 key: _keyForm,
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter name',
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: translation(context).enterName,
                   ),
                   controller: _nameController,
                   validator: (value) {
@@ -219,7 +221,9 @@ class _PriorityScreenState extends State<PriorityScreen> {
                           : priorityCubit.updatePriority(priority.name!, value);
                     }
                   },
-                  child: Text((priority == null) ? 'Create New' : 'Update')),
+                  child: Text((priority == null)
+                      ? translation(context).createNew
+                      : translation(context).update)),
             ],
           ),
         );
