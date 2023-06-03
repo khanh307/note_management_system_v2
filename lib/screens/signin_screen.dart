@@ -231,7 +231,7 @@ class _SignInHomeState extends State<SignInHome> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(15),
                         ),
                         child: const Text(
                           'Sign In',
@@ -307,7 +307,7 @@ class _SignInHomeState extends State<SignInHome> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(10),
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
                         ),
