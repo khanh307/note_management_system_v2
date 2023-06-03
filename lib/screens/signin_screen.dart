@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_cubit.dart';
@@ -7,8 +10,10 @@ import 'package:note_management_system_v2/cubits/signin_cubit/signin_state.dart'
 
 import 'package:note_management_system_v2/home.dart';
 import 'package:note_management_system_v2/models/account.dart';
+
 import 'package:note_management_system_v2/screens/signup_screen.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInHome extends StatefulWidget {
   const SignInHome({super.key});
@@ -26,9 +31,44 @@ class _SignInHomeState extends State<SignInHome> {
 
   bool _obscureText = true;
 
+  bool _isCheckRemember = false;
+
   void _togglePassword() {
     setState(() {
       _obscureText = !_obscureText;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadRememberMe();
+  }
+
+  Future<void> _loadRememberMe() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    setState(() {
+      _isCheckRemember = sharedPref.getBool('remember') ?? false;
+      if (_isCheckRemember) {
+        _emailController.text = sharedPref.getString('email') ?? '';
+        _passwordController.text = sharedPref.getString('password') ?? '';
+      }
+    });
+  }
+
+  Future<void> _saveRemember(bool value) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      _isCheckRemember = value;
+      pref.setBool('remember', value);
+      if (!value) {
+        pref.remove('email');
+        pref.remove('password');
+      } else {
+        pref.setString('email', _emailController.text);
+        pref.setString('password', _passwordController.text);
+      }
     });
   }
 
@@ -71,7 +111,7 @@ class _SignInHomeState extends State<SignInHome> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     const Text(
                       'Sign In',
                       style: TextStyle(
@@ -81,14 +121,14 @@ class _SignInHomeState extends State<SignInHome> {
                           letterSpacing: 0.8),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 15,
                     ),
                     Image.asset(
                       'assets/images/logo_small.png',
                       height: 120,
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     const Text(
                       'SignIn Your Account',
@@ -145,7 +185,27 @@ class _SignInHomeState extends State<SignInHome> {
                           )),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: _isCheckRemember,
+                            onChanged: (value) {
+                              setState(() {
+                                _isCheckRemember = value ?? false;
+                              });
+                            },
+                          ),
+                          const Text('Remember me')
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -158,8 +218,12 @@ class _SignInHomeState extends State<SignInHome> {
 
                             final encryptPasswords = hashPassword(password);
 
-                            context.read<SignInCubit>().login(Account(
-                                email: email, password: encryptPasswords));
+                            _saveRemember(_isCheckRemember);
+
+                            context.read<SignInCubit>().login(
+                                  Account(
+                                      email: email, password: encryptPasswords),
+                                );
                           }
                         },
                         child: const Text(
@@ -169,7 +233,7 @@ class _SignInHomeState extends State<SignInHome> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -193,7 +257,7 @@ class _SignInHomeState extends State<SignInHome> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -217,6 +281,8 @@ class _SignInHomeState extends State<SignInHome> {
                                   }
                                 }
                               }
+
+                              _saveRemember(_isCheckRemember);
 
                               photoUrl = value.photoUrl ?? '';
 
