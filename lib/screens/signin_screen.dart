@@ -113,7 +113,7 @@ class _SignInHomeState extends State<SignInHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       translation(context).login,
                       style: TextStyle(
                           fontWeight: FontWeight.w500,

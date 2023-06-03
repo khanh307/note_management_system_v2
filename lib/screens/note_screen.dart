@@ -304,7 +304,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     height: 20,
                   ),
                   MyDropdownButton(
-                      hint: translation(context).status,
+                      hint: translation(context).pickpriority,
                       dropdownValue: dropdownPriorityValue,
                       dropdownItems: _priorities!.map((e) {
                         return e.name;
@@ -320,7 +320,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     height: 20,
                   ),
                   MyDropdownButton(
-                      hint: translation(context).pickpriority,
+                      hint: translation(context).pickStatus,
                       dropdownValue: dropdownStatusValue,
                       dropdownItems: _status!.map((e) {
                         return e.name;
