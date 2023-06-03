@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/component/snack_bar.dart';
 import 'package:note_management_system_v2/cubits/category_cubit/category_cubit.dart';
 import 'package:note_management_system_v2/cubits/category_cubit/category_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/models/category.dart';
-import 'package:note_management_system_v2/models/user.dart';
 import 'package:note_management_system_v2/repository/category_repository.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -25,7 +25,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   void initState() {
     super.initState();
-    categoryCubit = CategoryCubit(CategoryRepository(email: widget.user.email!));
+    categoryCubit =
+        CategoryCubit(CategoryRepository(email: widget.user.email!));
     categoryCubit.getAllCategory();
   }
 
@@ -39,7 +40,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
             if (state is SuccessSubmitCategoryState) {
               Navigator.of(context).pop();
               _nameController.clear();
-              showSnackBar(context, 'Successfully insert ${state.category.name}');
+              showSnackBar(
+                  context, 'Successfully insert ${state.category.name}');
               categoryCubit.getAllCategory();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitCategoryState) {
@@ -69,7 +71,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
           // child: BlocBuilder<StatusCubit, StatusState>(
           builder: (context, state) {
             debugPrint(state.toString());
-            if (state is InitialCategoryState || state is LoadingCategoryState) {
+            if (state is InitialCategoryState ||
+                state is LoadingCategoryState) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
@@ -131,8 +134,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Future<bool> _deleteStatus(String name) async {
     final AlertDialog dialog = AlertDialog(
-      title: const Text('Delete'),
-      content: Text('* You want to delete this $name? Yes/No?'),
+      title: Text(translation(context).del),
+      content: Text(translation(context).del + ' $name? Yes/No?'),
       actions: [
         ElevatedButton(
             onPressed: () {
@@ -177,9 +180,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
               Form(
                 key: _keyForm,
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter name',
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: translation(context).enterName,
                   ),
                   controller: _nameController,
                   validator: (value) {
@@ -213,7 +216,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           : categoryCubit.updateCategory(category.name!, value);
                     }
                   },
-                  child: Text((category == null) ? 'Create New' : 'Update')),
+                  child: Text((category == null)
+                      ? translation(context).createNew
+                      : translation(context).update)),
             ],
           ),
         );
@@ -221,4 +226,3 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 }
-
