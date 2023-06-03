@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/cubits/note_cubit/note_state.dart';
 import 'package:note_management_system_v2/models/note.dart';
+import 'package:note_management_system_v2/repository/api_constant.dart';
 import 'package:note_management_system_v2/repository/note_repository.dart';
 
 class NoteCubit extends Cubit<NoteState> {
@@ -23,9 +24,9 @@ class NoteCubit extends Cubit<NoteState> {
   Future<void> createNote(Note note) async {
     try {
       var result = await _noteRepository.createNote(note);
-      if (result.status == 1) {
+      if (result.status == APIConstant.statusSuccess) {
         emit(SuccessSubmitNoteState(note));
-      } else if (result.status == -1 && result.error == 2) {
+      } else if (result.status == APIConstant.statusError && result.error == APIConstant.errorDuplicate) {
         emit(ErrorSubmitNoteState(
             '* Please enter a different name, this name already exists'));
       }
@@ -37,9 +38,9 @@ class NoteCubit extends Cubit<NoteState> {
   Future<void> updateNote(String name, Note note) async {
     try {
       var result = await _noteRepository.updateNote(name, note);
-      if (result.status == 1) {
+      if (result.status == APIConstant.statusSuccess) {
         emit(SuccessUpdateNoteState(note));
-      } else if (result.status == -1) {
+      } else if (result.status == APIConstant.statusError) {
         emit(ErrorUpdateNoteState('* Lỗi'));
       }
     } catch (e) {
@@ -51,9 +52,9 @@ class NoteCubit extends Cubit<NoteState> {
   Future<void> deleteNote(String name) async {
     try {
       var result = await _noteRepository.deleteNote(name);
-      if (result.status == 1) {
+      if (result.status == APIConstant.statusSuccess) {
         emit(SuccessDeleteNoteState());
-      } else if (result.status == -1 && result.error == 2) {
+      } else if (result.status == APIConstant.statusError && result.error == APIConstant.errorDuplicate) {
         emit(ErrorDeleteNoteState(
             '* Can\'t delete this $name because it already exists in note'));
       }

@@ -2,6 +2,12 @@ import 'package:http/http.dart' as http;
 
 class APIConstant {
   static const String BASE_URL = 'https://it-fresher.edu.vn/nms';
+
+  static const int statusSuccess = 1;
+
+  static const int statusError = -1;
+  static const int errorNotFound = 1;
+  static const int errorDuplicate = 2;
 }
 
 class SignUpConstant {

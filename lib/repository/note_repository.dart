@@ -21,7 +21,7 @@ class NoteRepository {
     final response = await http.get(uri);
     final parsed = jsonDecode(response.body);
 
-    if (parsed['status'] == 1 && parsed['data'] != null) {
+    if (parsed['status'] == APIConstant.statusSuccess && parsed['data'] != null) {
       Response result = Response.fromJson(parsed);
       final list =
           result.data?.map<Note>((note) => Note.fromArray(note)).toList();
