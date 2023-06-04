@@ -181,7 +181,7 @@ class _SignInHomeState extends State<SignInHome> {
                                     ),
                                   ),
                                 ),
-                                validator: ValidateEnglish.valiPasswordSignIn,
+                                // validator: ValidateEnglish.valiPasswordSignIn,
                               ),
                             ],
                           )),
@@ -300,10 +300,6 @@ class _SignInHomeState extends State<SignInHome> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: const EdgeInsets.all(10),
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
                         ),

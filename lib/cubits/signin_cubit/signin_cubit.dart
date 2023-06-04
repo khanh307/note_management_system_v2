@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_state.dart';
@@ -16,7 +17,7 @@ class SignInCubit extends Cubit<SignInState> {
 
   Future<void> login(Account account) async {
     emit(SignInLoadingState());
-
+    debugPrint(account.password);
     try {
       var dataUser = await SignInRepository.login(account);
 

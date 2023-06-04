@@ -63,8 +63,8 @@ class _HomePage extends StatelessWidget {
       NoteScreen(
         user: account,
       ),
-      const EditProfileScreen(),
-      const ChangePasswordScreen(),
+      EditProfileScreen(user: account),
+      ChangePasswordScreen(user: account),
     ];
 
     return Scaffold(
@@ -92,7 +92,8 @@ class _HomePage extends StatelessWidget {
               },
               items: Language.languageList()
                   .map<DropdownMenuItem<Language>>(
-                    (e) => DropdownMenuItem<Language>(
+                    (e) =>
+                    DropdownMenuItem<Language>(
                       value: e,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -105,7 +106,7 @@ class _HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )
+              )
                   .toList(),
             ),
           )
@@ -137,8 +138,12 @@ class _HomePage extends StatelessWidget {
               ),
             ),
             ListTile(
-              selected:  context.watch<DrawerCubit>().state == 0,
-              tileColor: context.watch<DrawerCubit>().state == 0 ? Colors.blue : Colors.white,
+              selected: context
+                  .watch<DrawerCubit>()
+                  .state == 0,
+              tileColor: context
+                  .watch<DrawerCubit>()
+                  .state == 0 ? Colors.blue : Colors.white,
               leading: const Icon(Icons.camera_alt),
               title: Text(translation(context).home),
               onTap: () {
@@ -147,8 +152,12 @@ class _HomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              selected:  context.watch<DrawerCubit>().state == 1,
-              tileColor: context.watch<DrawerCubit>().state == 1 ? Colors.blue : Colors.white,
+              selected: context
+                  .watch<DrawerCubit>()
+                  .state == 1,
+              tileColor: context
+                  .watch<DrawerCubit>()
+                  .state == 1 ? Colors.blue : Colors.white,
               leading: const Icon(Icons.photo_library),
               title: Text(translation(context).category),
               onTap: () {
@@ -157,8 +166,12 @@ class _HomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              selected:  context.watch<DrawerCubit>().state == 2,
-              tileColor: context.watch<DrawerCubit>().state == 2 ? Colors.blue : Colors.white,
+              selected: context
+                  .watch<DrawerCubit>()
+                  .state == 2,
+              tileColor: context
+                  .watch<DrawerCubit>()
+                  .state == 2 ? Colors.blue : Colors.white,
               leading: const Icon(Icons.video_collection_rounded),
               title: Text(translation(context).prio),
               onTap: () {
@@ -167,8 +180,12 @@ class _HomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              selected:  context.watch<DrawerCubit>().state == 3,
-              tileColor: context.watch<DrawerCubit>().state == 3 ? Colors.blue : Colors.white,
+              selected: context
+                  .watch<DrawerCubit>()
+                  .state == 3,
+              tileColor: context
+                  .watch<DrawerCubit>()
+                  .state == 3 ? Colors.blue : Colors.white,
               leading: const Icon(Icons.restart_alt),
               title: Text(translation(context).status),
               onTap: () {
@@ -177,8 +194,12 @@ class _HomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              selected:  context.watch<DrawerCubit>().state == 4,
-              tileColor: context.watch<DrawerCubit>().state == 4 ? Colors.blue : Colors.white,
+              selected: context
+                  .watch<DrawerCubit>()
+                  .state == 4,
+              tileColor: context
+                  .watch<DrawerCubit>()
+                  .state == 4 ? Colors.blue : Colors.white,
               leading: const Icon(Icons.note),
               title: Text(translation(context).note),
               onTap: () {
@@ -192,8 +213,12 @@ class _HomePage extends StatelessWidget {
               child: Text(translation(context).acc),
             ),
             ListTile(
-              selected:  context.watch<DrawerCubit>().state == 5,
-              tileColor: context.watch<DrawerCubit>().state == 5 ? Colors.blue : Colors.white,
+              selected: context
+                  .watch<DrawerCubit>()
+                  .state == 5,
+              tileColor: context
+                  .watch<DrawerCubit>()
+                  .state == 5 ? Colors.blue : Colors.white,
               leading: const Icon(Icons.share),
               title: Text(translation(context).editProfile),
               onTap: () {
@@ -204,8 +229,12 @@ class _HomePage extends StatelessWidget {
             Visibility(
               visible: !isGoogleSignIn,
               child: ListTile(
-                selected:  context.watch<DrawerCubit>().state == 6,
-                tileColor: context.watch<DrawerCubit>().state == 6 ? Colors.blue : Colors.white,
+                selected: context
+                    .watch<DrawerCubit>()
+                    .state == 6,
+                tileColor: context
+                    .watch<DrawerCubit>()
+                    .state == 6 ? Colors.blue : Colors.white,
                 leading: const Icon(Icons.send),
                 title: Text(translation(context).changePass),
                 onTap: () {
@@ -215,8 +244,12 @@ class _HomePage extends StatelessWidget {
               ),
             ),
             ListTile(
-              selected:  context.watch<DrawerCubit>().state == 7,
-              tileColor: context.watch<DrawerCubit>().state == 7 ? Colors.blue : Colors.white,
+              selected: context
+                  .watch<DrawerCubit>()
+                  .state == 7,
+              tileColor: context
+                  .watch<DrawerCubit>()
+                  .state == 7 ? Colors.blue : Colors.white,
               leading: const Icon(Icons.logout),
               title: Text(translation(context).logOut),
               onTap: () {
@@ -226,7 +259,7 @@ class _HomePage extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const SignInHome()),
-                  (route) => false,
+                      (route) => false,
                 );
               },
             ),
