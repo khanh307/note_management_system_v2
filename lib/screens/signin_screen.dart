@@ -180,7 +180,7 @@ class _SignInHomeState extends State<SignInHome> {
                                     ),
                                   ),
                                 ),
-                                // validator: ValidateEnglish.valiPasswordSignIn,
+                                validator: ValidateEnglish.valiPasswordSignIn,
                               ),
                             ],
                           )),

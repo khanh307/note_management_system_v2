@@ -169,13 +169,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
                                   final encryptPasswords =
                                       hashPassword(newPassword);
+
                                   if (widget.user.password ==
                                       hashPassword(currentPassword)) {
                                     context
                                         .read<ChangePasswordCubit>()
                                         .changePassword(
                                             email: email,
-                                            password: currentPassword,
+                                            password: hashPassword(currentPassword),
                                             newPassword: encryptPasswords);
                                   } else {
                                     showSnackBar(

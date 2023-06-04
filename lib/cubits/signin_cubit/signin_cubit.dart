@@ -23,6 +23,7 @@ class SignInCubit extends Cubit<SignInState> {
       if (dataUser.status == SignInConstant.statusSuccess) {
         final loginUser = Account(
             email: account.email,
+            password: account.password,
             fristname: dataUser.info?['FirstName'],
             lastname: dataUser.info?['LastName']);
         emit(SignInSuccessState(loginUser));
