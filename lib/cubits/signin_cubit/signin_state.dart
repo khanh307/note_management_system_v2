@@ -1,5 +1,4 @@
 import 'package:note_management_system_v2/models/account.dart';
-import 'package:note_management_system_v2/models/user.dart';
 
 abstract class SignInState {}
 

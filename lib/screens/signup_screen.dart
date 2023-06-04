@@ -6,6 +6,8 @@ import 'package:note_management_system_v2/cubits/signup_cubit/signup_state.dart'
 import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/screens/signin_screen.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
+import 'package:note_management_system_v2/utils/snackbar/snack_bar.dart';
+import 'package:note_management_system_v2/utils/validate/validate_english.dart';
 
 class SignUpHome extends StatefulWidget {
   const SignUpHome({Key? key}) : super(key: key);
@@ -19,6 +21,7 @@ class _SignUpHomeState extends State<SignUpHome> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final _formKeySignUp = GlobalKey<FormState>();
 
   bool _obscureText = true;
 
@@ -48,11 +51,7 @@ class _SignUpHomeState extends State<SignUpHome> {
               });
             } else if (state is SignUpErrorState) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.errorMessage),
-                  ),
-                );
+                showSnackBar(context, state.errorMessage);
               });
             }
           },
@@ -64,7 +63,7 @@ class _SignUpHomeState extends State<SignUpHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      height: 20,
+                      height: 5,
                     ),
                     Text(
                       translation(context).register,
@@ -75,14 +74,14 @@ class _SignUpHomeState extends State<SignUpHome> {
                           letterSpacing: 0.8),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Image.asset(
                       'assets/images/logo_small.png',
                       height: 120,
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Text(
                       translation(context).regisQuote,
@@ -94,22 +93,24 @@ class _SignUpHomeState extends State<SignUpHome> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                       ),
                       child: Form(
+                        key: _formKeySignUp,
                         child: Column(
                           children: [
                             TextFormField(
                               controller: _emailController,
                               decoration: const InputDecoration(
-                                labelText: 'Email',
+                                labelText: 'Enter your email',
                                 prefixIcon: Icon(Icons.email),
                                 border: OutlineInputBorder(),
                               ),
+                              validator: ValidateEnglish.valiEmailSignUp,
                             ),
                             const SizedBox(
                               height: 10,
@@ -133,6 +134,7 @@ class _SignUpHomeState extends State<SignUpHome> {
                                   ),
                                 ),
                               ),
+                              validator: ValidateEnglish.valiPasswordSignUp,
                             ),
                             const SizedBox(
                               height: 10,
@@ -144,6 +146,7 @@ class _SignUpHomeState extends State<SignUpHome> {
                                 prefixIcon: const Icon(Icons.person),
                                 border: const OutlineInputBorder(),
                               ),
+                              validator: ValidateEnglish.validateFirstnameEdit,
                             ),
                             const SizedBox(
                               height: 10,
@@ -155,31 +158,34 @@ class _SignUpHomeState extends State<SignUpHome> {
                                 prefixIcon: const Icon(Icons.person),
                                 border: const OutlineInputBorder(),
                               ),
+                              validator: ValidateEnglish.validateLastnameEdit,
                             ),
                           ],
                         ),
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          final email = _emailController.text;
-                          final password = _passwordController.text;
-                          final firstName = _firstNameController.text;
-                          final lastName = _lastNameController.text;
+                          if (_formKeySignUp.currentState!.validate()) {
+                            final email = _emailController.text;
+                            final password = _passwordController.text;
+                            final firstName = _firstNameController.text;
+                            final lastName = _lastNameController.text;
 
-                          final encryptPasswords = hashPassword(password);
+                            final encryptPasswords = hashPassword(password);
 
-                          context.read<SignUpCubit>().addAccount(Account(
-                              email: email,
-                              password: encryptPasswords,
-                              fristname: firstName,
-                              lastname: lastName));
+                            context.read<SignUpCubit>().addAccount(Account(
+                                email: email,
+                                password: encryptPasswords,
+                                fristname: firstName,
+                                lastname: lastName));
+                          }
                         },
                         child: Text(
                           translation(context).register,
@@ -189,7 +195,7 @@ class _SignUpHomeState extends State<SignUpHome> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 5,
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
