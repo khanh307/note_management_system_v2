@@ -7,7 +7,7 @@ import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/screens/signin_screen.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
 import 'package:note_management_system_v2/utils/snackbar/snack_bar.dart';
-import 'package:note_management_system_v2/utils/validate/validate_english.dart';
+
 
 class SignUpHome extends StatefulWidget {
   const SignUpHome({Key? key}) : super(key: key);

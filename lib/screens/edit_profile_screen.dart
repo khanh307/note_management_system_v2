@@ -6,7 +6,6 @@ import 'package:note_management_system_v2/cubits/edit_profile_cubit.dart/edit_cu
 import 'package:note_management_system_v2/cubits/edit_profile_cubit.dart/edit_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/utils/snackbar/snack_bar.dart';
-import 'package:note_management_system_v2/utils/validate/validate_english.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final Account user;

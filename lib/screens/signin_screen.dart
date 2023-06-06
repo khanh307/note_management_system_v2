@@ -1,6 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +15,6 @@ import 'package:note_management_system_v2/screens/signup_screen.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
 import 'package:note_management_system_v2/utils/regex/regex.dart';
 import 'package:note_management_system_v2/utils/snackbar/snack_bar.dart';
-import 'package:note_management_system_v2/utils/validate/validate_english.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInHome extends StatefulWidget {

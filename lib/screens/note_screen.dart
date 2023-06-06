@@ -11,7 +11,7 @@ import 'package:note_management_system_v2/models/category.dart';
 import 'package:note_management_system_v2/models/note.dart';
 import 'package:note_management_system_v2/models/priority.dart';
 import 'package:note_management_system_v2/models/status.dart';
-import 'package:note_management_system_v2/models/user.dart';
+
 import 'package:note_management_system_v2/repository/category_repository.dart';
 import 'package:note_management_system_v2/repository/note_repository.dart';
 import 'package:note_management_system_v2/repository/priority_repository.dart';
