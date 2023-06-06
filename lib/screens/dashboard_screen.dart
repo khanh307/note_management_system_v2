@@ -48,51 +48,58 @@ class _DashboardScreenState extends State<DashboardScreen> {
               );
             } else if (state is SuccessGetAllChartState) {
               final listChart = state.listChartStatus;
-              return Center(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: DChartPie(
-                    data: listChart!.data!.map((e) {
-                      return {
-                        'domain': e.name,
-                        'measure': double.parse(
-                            (int.parse(e.counter!) / (listChart.total!) * 100)
-                                .toStringAsFixed(2))
-                      };
-                    }).toList(),
-                    fillColor: (pieData, index) {
-                      switch (pieData['domain'].toString().toLowerCase()) {
-                        case 'processing':
-                          return Colors.grey[600];
-                        case 'done':
-                          return Colors.blue[900];
-                        case 'pending':
-                          return Colors.red;
-                        default:
-                          return Color.fromARGB(
-                              Random().nextInt(256),
-                              Random().nextInt(256),
-                              Random().nextInt(256),
-                              Random().nextInt(256));
-                      }
-                    },
-                    labelColor: Colors.white,
-                    labelPosition: PieLabelPosition.inside,
-                    // labelFontSize: 13,
-                    // labelLineThickness: 1,
-                    // labelLinelength: 10,
-                    // labelPadding: 10,
-                    pieLabel: (Map<dynamic, dynamic> pieData, int? index) {
-                      return pieData['domain'] +
-                          ': ' +
-                          pieData['measure'].toString() +
-                          '%';
-                    },
-                    strokeWidth: 2,
-                    animationDuration: const Duration(milliseconds: 2700),
-                  ),
-                ),
-              );
+              return listChart!.data!.isEmpty
+                  ? const Center(
+                      child: Text("There is nothing here!"),
+                    )
+                  : Center(
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: DChartPie(
+                          data: listChart.data!.map((e) {
+                            return {
+                              'domain': e.name,
+                              'measure': double.parse((int.parse(e.counter!) /
+                                      (listChart.total!) *
+                                      100)
+                                  .toStringAsFixed(2))
+                            };
+                          }).toList(),
+                          fillColor: (pieData, index) {
+                            switch (
+                                pieData['domain'].toString().toLowerCase()) {
+                              case 'processing':
+                                return Colors.grey[600];
+                              case 'done':
+                                return Colors.blue[900];
+                              case 'pending':
+                                return Colors.red;
+                              default:
+                                return Color.fromARGB(
+                                    Random().nextInt(256),
+                                    Random().nextInt(256),
+                                    Random().nextInt(256),
+                                    Random().nextInt(256));
+                            }
+                          },
+                          labelColor: Colors.white,
+                          labelPosition: PieLabelPosition.inside,
+                          // labelFontSize: 13,
+                          // labelLineThickness: 1,
+                          // labelLinelength: 10,
+                          // labelPadding: 10,
+                          pieLabel:
+                              (Map<dynamic, dynamic> pieData, int? index) {
+                            return pieData['domain'] +
+                                ': ' +
+                                pieData['measure'].toString() +
+                                '%';
+                          },
+                          strokeWidth: 2,
+                          animationDuration: const Duration(milliseconds: 2700),
+                        ),
+                      ),
+                    );
             } else {
               return const Center(
                 child: Text("Dashboard Empty!"),
