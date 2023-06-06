@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/dashboard_cubit/dashboard_cubit.dart';
 import 'package:note_management_system_v2/cubits/dashboard_cubit/dashboard_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
@@ -49,8 +50,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             } else if (state is SuccessGetAllChartState) {
               final listChart = state.listChartStatus;
               return listChart!.data!.isEmpty
-                  ? const Center(
-                      child: Text("There is nothing here!"),
+                  ? Center(
+                      child: Text(translation(context).emptyData),
                     )
                   : Center(
                       child: AspectRatio(

@@ -62,5 +62,6 @@
     "noChoice":"Không",
     "yesChoice":"Đồng ý",
     "no6Month":" không thể xóa bởi nó chưa đủ 6 tháng thời gian!",
-    "existinNote":" không thể xóa bởi nó đang tồn tại trong Note"
+    "existinNote":" không thể xóa bởi nó đang tồn tại trong Note",
+    "emptyData":"Không có gì ở đây!"
 }

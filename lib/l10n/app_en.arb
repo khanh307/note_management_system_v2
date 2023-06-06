@@ -62,5 +62,6 @@
     "noChoice":"No",
     "yesChoice":"Yes",
     "no6Month":" can't be deleted because it has not been more than 6 months!",
-    "existinNote":"can't be deleted because it exists in Note"
+    "existinNote":"can't be deleted because it exists in Note",
+    "emptyData":"There is nothing here!"
 }
