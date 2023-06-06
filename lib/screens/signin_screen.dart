@@ -194,6 +194,16 @@ class _SignInHomeState extends State<SignInHome> {
                                   ),
                                 ),
                                 // validator: ValidateEnglish.valiPasswordSignIn,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return translation(context).noInputField;
+                                  }
+
+                                  if (!isPasswordValid(value)) {
+                                    return translation(context).incorrectEmailPass;
+                                  }
+                                  return null;
+                                },
                               ),
                             ],
                           )),
