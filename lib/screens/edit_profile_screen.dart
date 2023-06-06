@@ -149,6 +149,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               height: 30,
                             ),
                             ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 15)),
                               onPressed: () {
                                 if (_formKeyEdit.currentState!.validate()) {
                                   final email = _emailController.text;
