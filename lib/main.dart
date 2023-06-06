@@ -4,11 +4,16 @@ import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/models/shared_preferences.dart';
 import 'package:note_management_system_v2/screens/signin_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/services.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await SharedPreferencesManager.init();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   runApp(const MyApp());
 }
 
