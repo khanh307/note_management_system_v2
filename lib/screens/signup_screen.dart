@@ -106,11 +106,44 @@ class _SignUpHomeState extends State<SignUpHome> {
                             TextFormField(
                               controller: _emailController,
                               decoration: const InputDecoration(
-                                labelText: 'Enter your email',
+                                labelText: 'Email',
                                 prefixIcon: Icon(Icons.email),
                                 border: OutlineInputBorder(),
                               ),
-                              validator: ValidateEnglish.valiEmailSignUp,
+                              // validator: ValidateEnglish.valiEmailSignUp,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return translation(context).noInputField;
+                                }
+
+                                if (value.trim().length < 6) {
+                                  return translation(context).atLeast6;
+                                }
+
+                                if (value.contains('..') ||
+                                    value.startsWith('.') ||
+                                    value.endsWith('.') ||
+                                    value.endsWith('@') ||
+                                    value.contains('-@') ||
+                                    value.contains('@-') ||
+                                    value.contains('..') ||
+                                    RegExp(r'^[0-9]+$').hasMatch(value)) {
+                                  return translation(context).incorrectEmail;
+                                }
+
+                                final List<String> parts = value.split('@');
+                                if (parts.length != 2 ||
+                                    parts[0].isEmpty ||
+                                    parts[1].isEmpty) {
+                                  return translation(context).incorrectEmail;
+                                }
+
+                                if (RegExp(r'[^\w\s@.-]').hasMatch(value)) {
+                                  return translation(context).incorrectEmail;
+                                }
+
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 10,
@@ -134,7 +167,29 @@ class _SignUpHomeState extends State<SignUpHome> {
                                   ),
                                 ),
                               ),
-                              validator: ValidateEnglish.valiPasswordSignUp,
+                              // validator: ValidateEnglish.valiPasswordSignUp,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return translation(context).noInputField;
+                                }
+
+                                if (value.trim().length < 6 ||
+                                    value.trim().length > 32) {
+                                  return translation(context).min6max32;
+                                }
+
+                                RegExp upperCase = RegExp(r'[A-Z]');
+                                if (!upperCase.hasMatch(value)) {
+                                  return translation(context).capital1;
+                                }
+
+                                RegExp digit = RegExp(r'[0-9]');
+                                if (!digit.hasMatch(value)) {
+                                  return translation(context).min1Num;
+                                }
+
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 10,
@@ -146,7 +201,23 @@ class _SignUpHomeState extends State<SignUpHome> {
                                 prefixIcon: const Icon(Icons.person),
                                 border: const OutlineInputBorder(),
                               ),
-                              validator: ValidateEnglish.validateFirstnameEdit,
+                              // validator: ValidateEnglish.validateFirstnameEdit,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return translation(context).noInputField;
+                                }
+
+                                if (value.trim().length < 2 ||
+                                    value.trim().length > 32) {
+                                  return translation(context).min2max32;
+                                }
+
+                                if (value.endsWith(' ')) {
+                                  return translation(context).noSpace;
+                                }
+
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 10,
@@ -158,7 +229,21 @@ class _SignUpHomeState extends State<SignUpHome> {
                                 prefixIcon: const Icon(Icons.person),
                                 border: const OutlineInputBorder(),
                               ),
-                              validator: ValidateEnglish.validateLastnameEdit,
+                              // validator: ValidateEnglish.validateLastnameEdit,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return translation(context).noInputField;
+                                }
+
+                                if (value.length < 2 || value.length > 32) {
+                                  return translation(context).min2max32;
+                                }
+
+                                if (value.endsWith(' ')) {
+                                  return translation(context).noSpace;
+                                }
+                                return null;
+                              },
                             ),
                           ],
                         ),
@@ -180,11 +265,13 @@ class _SignUpHomeState extends State<SignUpHome> {
 
                             final encryptPasswords = hashPassword(password);
 
-                            context.read<SignUpCubit>().addAccount(Account(
-                                email: email,
-                                password: encryptPasswords,
-                                fristname: firstName,
-                                lastname: lastName));
+                            context.read<SignUpCubit>().addAccount(
+                                context,
+                                Account(
+                                    email: email,
+                                    password: encryptPasswords,
+                                    fristname: firstName,
+                                    lastname: lastName));
                           }
                         },
                         child: Text(

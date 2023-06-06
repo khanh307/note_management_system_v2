@@ -41,7 +41,8 @@ class _StatusScreenState extends State<StatusScreen> {
               Navigator.of(context).pop();
               _nameController.clear();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Successfully insert ${state.status.name}')));
+                  content: Text(
+                      translation(context).addSucc + '${state.status.name}')));
               statusCubit.getAllStatus();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitStatusState) {
@@ -49,15 +50,15 @@ class _StatusScreenState extends State<StatusScreen> {
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeleteStatusState) {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Successfully delete status')));
+                  SnackBar(content: Text(translation(context).delSucc)));
               // statusCubit.getAllStatus();
             } else if (state is ErrorDeleteStatusState) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(state.message)));
             } else if (state is SuccessUpdateStatusState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Successfully update a category!')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(translation(context).upSucc)));
               statusCubit.getAllStatus();
             } else if (state is ErrorUpdateStatusState) {
               Navigator.of(context).pop();
@@ -106,7 +107,7 @@ class _StatusScreenState extends State<StatusScreen> {
                     ),
                     confirmDismiss: (directory) async {
                       if (directory == DismissDirection.startToEnd) {
-                        return _deleteStatus(listStatus[index].name!);
+                        return _deleteStatus(context, listStatus[index].name!);
                       } else if (directory == DismissDirection.endToStart) {
                         await _showDialog(context, listStatus[index]);
                         return false;
@@ -135,22 +136,22 @@ class _StatusScreenState extends State<StatusScreen> {
     );
   }
 
-  Future<bool> _deleteStatus(String name) async {
+  Future<bool> _deleteStatus(context, String name) async {
     final AlertDialog dialog = AlertDialog(
-      title: const Text('Delete'),
-      content: Text('* You want to delete this $name? Yes/No?'),
+      title: Text(translation(context).del),
+      content: Text(translation(context).delQues + '$name?'),
       actions: [
         ElevatedButton(
             onPressed: () {
               Navigator.pop(context, false);
             },
-            child: const Text('No')),
+            child: Text(translation(context).noChoice)),
         ElevatedButton(
             onPressed: () {
-              statusCubit.deleteStatus(name);
+              statusCubit.deleteStatus(context, name);
               Navigator.pop(context, true);
             },
-            child: const Text('Yes')),
+            child: Text(translation(context).yesChoice)),
       ],
     );
 
@@ -190,15 +191,15 @@ class _StatusScreenState extends State<StatusScreen> {
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '* Please enter a name';
+                      return translation(context).noInputField;
                     }
 
                     if (value.length < 4) {
-                      return '* Please enter a minimum of 4 characters';
+                      return translation(context).min4;
                     }
 
                     if (isDuplicate) {
-                      return '* Please enter a different name, this name already exists';
+                      return translation(context).existName;
                     }
                     return null;
                   },
@@ -215,7 +216,7 @@ class _StatusScreenState extends State<StatusScreen> {
                       );
 
                       (status == null)
-                          ? statusCubit.createStatus(value)
+                          ? statusCubit.createStatus(context, value)
                           : statusCubit.updateStatus(status.name!, value);
                     }
                   },

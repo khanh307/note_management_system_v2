@@ -43,21 +43,21 @@ class _PriorityScreenState extends State<PriorityScreen> {
             if (state is SuccessSubmitPriorityState) {
               _nameController.clear();
               Navigator.of(context).pop();
-              showSnackBar(
-                  context, 'Successfully insert ${state.priority.name}');
+              showSnackBar(context,
+                  translation(context).addSucc + '${state.priority.name}');
               priorityCubit.getAllPriorities();
             } else if (state is ErrorSubmitStateState) {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeletePriorityState) {
-              showSnackBar(context, 'Successfully delete priority');
+              showSnackBar(context, translation(context).delSucc);
 
               priorityCubit.getAllPriorities();
             } else if (state is ErrorDeletePriorityState) {
               showSnackBar(context, state.message);
             } else if (state is SuccessUpdatePriorityState) {
               Navigator.of(context).pop();
-              showSnackBar(context, 'Successfully update a priority!');
+              showSnackBar(context, translation(context).upSucc);
               priorityCubit.getAllPriorities();
             } else if (state is ErrorUpdatePriorityState) {
               Navigator.of(context).pop();
@@ -106,7 +106,8 @@ class _PriorityScreenState extends State<PriorityScreen> {
                     ),
                     confirmDismiss: (directory) async {
                       if (directory == DismissDirection.startToEnd) {
-                        await _deletePriority(listPriority[index].name!);
+                        await _deletePriority(
+                            context, listPriority[index].name!);
                         return false;
                       } else if (directory == DismissDirection.endToStart) {
                         await _showDialog(context, listPriority[index]);
@@ -136,22 +137,22 @@ class _PriorityScreenState extends State<PriorityScreen> {
     );
   }
 
-  Future<void> _deletePriority(String name) async {
+  Future<void> _deletePriority(context, String name) async {
     final AlertDialog dialog = AlertDialog(
-      title: const Text('Delete'),
-      content: Text('* You want to delete this $name? Yes/No?'),
+      title: Text(translation(context).del),
+      content: Text(translation(context).delQues + '$name?'),
       actions: [
         ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('No')),
+            child: Text(translation(context).noChoice)),
         ElevatedButton(
             onPressed: () async {
-              priorityCubit.deletePriority(name);
+              priorityCubit.deletePriority(context, name);
               Navigator.pop(context);
             },
-            child: const Text('Yes')),
+            child: Text(translation(context).yesChoice)),
       ],
     );
 
@@ -192,15 +193,15 @@ class _PriorityScreenState extends State<PriorityScreen> {
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '* Please enter a name';
+                      return translation(context).noInputField;
                     }
 
                     if (value.length < 4) {
-                      return '* Please enter a minimum of 5 characters';
+                      return translation(context).min4;
                     }
 
                     if (isDuplicate) {
-                      return '* Please enter a different name, this name already exists';
+                      return translation(context).existName;
                     }
                     return null;
                   },
@@ -217,7 +218,7 @@ class _PriorityScreenState extends State<PriorityScreen> {
                       );
 
                       (priority == null)
-                          ? priorityCubit.createPriority(value)
+                          ? priorityCubit.createPriority(context, value)
                           : priorityCubit.updatePriority(priority.name!, value);
                     }
                   },

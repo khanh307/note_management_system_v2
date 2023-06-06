@@ -80,20 +80,21 @@ class _NoteScreenState extends State<NoteScreen> {
               Navigator.of(context).pop();
               _nameController.clear();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Successfully insert ${state.note.name}')));
+                  content: Text(
+                      translation(context).addSucc + '${state.note.name}')));
               noteCubit.getAllNotes();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitNoteState) {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeleteNoteState) {
-              showSnackBar(context, 'Successfully delete note');
+              showSnackBar(context, translation(context).delSucc);
               // noteCubit.getAllNotes();
             } else if (state is ErrorDeleteNoteState) {
               showSnackBar(context, state.message);
             } else if (state is SuccessUpdateNoteState) {
               Navigator.of(context).pop();
-              showSnackBar(context, 'Successfully update a note!');
+              showSnackBar(context, translation(context).upSucc);
               noteCubit.getAllNotes();
             } else if (state is ErrorUpdateNoteState) {
               Navigator.of(context).pop();
@@ -139,7 +140,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     ),
                     confirmDismiss: (directory) async {
                       if (directory == DismissDirection.startToEnd) {
-                        return _deleteNote(listNotes[index]);
+                        return _deleteNote(context, listNotes[index]);
                       } else if (directory == DismissDirection.endToStart) {
                         await _showDialog(context, listNotes[index]);
                         return false;
@@ -196,23 +197,23 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Future<bool> _deleteNote(Note note) async {
+  Future<bool> _deleteNote(context, Note note) async {
     if (_checkNoteDone(note)) {
       final AlertDialog dialog = AlertDialog(
-        title: const Text('Delete'),
-        content: Text('* You want to delete this ${note.name}? Yes/No?'),
+        title: Text(translation(context).del),
+        content: Text(translation(context).delQues + '${note.name}?'),
         actions: [
           ElevatedButton(
               onPressed: () {
                 Navigator.pop(context, false);
               },
-              child: const Text('No')),
+              child: Text(translation(context).noChoice)),
           ElevatedButton(
               onPressed: () async {
                 noteCubit.deleteNote(note.name!);
                 Navigator.pop(context, true);
               },
-              child: const Text('Yes')),
+              child: Text(translation(context).yesChoice)),
         ],
       );
 
@@ -221,8 +222,7 @@ class _NoteScreenState extends State<NoteScreen> {
           useRootNavigator: false,
           builder: (context) => dialog);
     } else {
-      showSnackBar(context,
-          '* You can\'t delete ${note.name} because it has not been more than 6 months ');
+      showSnackBar(context, note.name! + translation(context).no6Month);
       return false;
     }
   }
@@ -270,15 +270,15 @@ class _NoteScreenState extends State<NoteScreen> {
                     controller: _nameController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '* Please enter a name';
+                        return translation(context).noInputField;
                       }
 
                       if (value.length < 4) {
-                        return '* Please enter a minimum of 4 characters';
+                        return translation(context).min4;
                       }
 
                       if (isDuplicate) {
-                        return '* Please enter a different name, this name already exists';
+                        return translation(context).existName;
                       }
 
                       return null;
@@ -299,7 +299,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         });
                       },
                       validator: (value) =>
-                          NoteValidator.categoryValidate(value)),
+                          NoteValidator.categoryValidate(context, value)),
                   const SizedBox(
                     height: 20,
                   ),
@@ -315,7 +315,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         });
                       },
                       validator: (value) =>
-                          NoteValidator.statusValidate(value)),
+                          NoteValidator.priorityValidate(context, value)),
                   const SizedBox(
                     height: 20,
                   ),
@@ -331,12 +331,13 @@ class _NoteScreenState extends State<NoteScreen> {
                         });
                       },
                       validator: (value) =>
-                          NoteValidator.priorityValidate(value)),
+                          NoteValidator.statusValidate(context, value)),
                   const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
-                    validator: (value) => NoteValidator.planDateValidate(value),
+                    validator: (value) =>
+                        NoteValidator.planDateValidate(context, value),
                     decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: translation(context).pickdate),

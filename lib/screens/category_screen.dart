@@ -40,21 +40,21 @@ class _CategoryScreenState extends State<CategoryScreen> {
             if (state is SuccessSubmitCategoryState) {
               Navigator.of(context).pop();
               _nameController.clear();
-              showSnackBar(
-                  context, 'Successfully insert ${state.category.name}');
+              showSnackBar(context,
+                  translation(context).addSucc + ' ${state.category.name}');
               categoryCubit.getAllCategory();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitCategoryState) {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeleteCategoryState) {
-              showSnackBar(context, 'Successfully delete status');
+              showSnackBar(context, translation(context).delSucc);
               // categoryCubit.getAllCategory();
             } else if (state is ErrorDeleteCategoryState) {
               showSnackBar(context, state.message);
             } else if (state is SuccessUpdateCategoryState) {
               Navigator.of(context).pop();
-              showSnackBar(context, 'Successfully update a category!');
+              showSnackBar(context, translation(context).update);
               categoryCubit.getAllCategory();
             } else if (state is ErrorUpdateCategoryState) {
               Navigator.of(context).pop();
@@ -103,7 +103,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                     confirmDismiss: (directory) async {
                       if (directory == DismissDirection.startToEnd) {
-                        return await _deleteStatus(listCategory[index].name!);
+                        return await _deleteStatus(
+                            context, listCategory[index].name!);
                       } else if (directory == DismissDirection.endToStart) {
                         await _showDialog(context, listCategory[index]);
                         return false;
@@ -132,22 +133,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Future<bool> _deleteStatus(String name) async {
+  Future<bool> _deleteStatus(context, String name) async {
     final AlertDialog dialog = AlertDialog(
       title: Text(translation(context).del),
-      content: Text(translation(context).del + ' $name? Yes/No?'),
+      content: Text(translation(context).delQues + ' $name?'),
       actions: [
         ElevatedButton(
             onPressed: () {
               Navigator.pop(context, false);
             },
-            child: const Text('No')),
+            child: Text(translation(context).noChoice)),
         ElevatedButton(
             onPressed: () async {
-              categoryCubit.deleteCategory(name);
+              categoryCubit.deleteCategory(context, name);
               Navigator.pop(context, true);
             },
-            child: const Text('Yes')),
+            child: Text(translation(context).yesChoice)),
       ],
     );
 
@@ -187,15 +188,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '* Please enter a name';
+                      return translation(context).noInputField;
                     }
 
                     if (value.length < 4) {
-                      return '* Please enter a minimum of 4 characters';
+                      return translation(context).min4;
                     }
 
                     if (isDuplicate) {
-                      return '* Please enter a different name, this name already exists';
+                      return translation(context).existName;
                     }
                     return null;
                   },
@@ -212,7 +213,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       );
 
                       (category == null)
-                          ? categoryCubit.createCategory(value)
+                          ? categoryCubit.createCategory(context, value)
                           : categoryCubit.updateCategory(category.name!, value);
                     }
                   },

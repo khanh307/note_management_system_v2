@@ -95,7 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               );
             } else {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: Text("Dashboard Empty!"),
               );
             }
           },

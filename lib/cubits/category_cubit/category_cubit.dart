@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/category_cubit/category_state.dart';
 import 'package:note_management_system_v2/models/category.dart';
 import 'package:note_management_system_v2/repository/category_repository.dart';
@@ -20,13 +21,13 @@ class CategoryCubit extends Cubit<CategoryState> {
   }
 
   //Ghi
-  Future<void> createCategory(Category category) async {
+  Future<void> createCategory(context, Category category) async {
     try {
       var result = await _categoryRepository.createCategory(category);
       if (result.status == 1) {
         emit(SuccessSubmitCategoryState(category));
       } else if (result.status == -1 && result.error == 2) {
-        emit(ErrorSubmitCategoryState('* Please enter a different name, this name already exists'));
+        emit(ErrorSubmitCategoryState(translation(context).existName));
       }
     } catch (e) {
       emit(FailureCategoryState(e.toString()));
@@ -36,9 +37,9 @@ class CategoryCubit extends Cubit<CategoryState> {
   Future<void> updateCategory(String name, Category category) async {
     try {
       var result = await _categoryRepository.updateCategory(name, category);
-      if(result.status == 1) {
+      if (result.status == 1) {
         emit(SuccessUpdateCategoryState(category));
-      } else if (result.status == -1){
+      } else if (result.status == -1) {
         emit(ErrorUpdateCategoryState('* Lỗi'));
       }
     } catch (e) {
@@ -47,14 +48,14 @@ class CategoryCubit extends Cubit<CategoryState> {
   }
 
   // Xóa
-  Future<void> deleteCategory(String name) async {
+  Future<void> deleteCategory(context, String name) async {
     try {
       var result = await _categoryRepository.deleteCategory(name);
       if (result.status == 1) {
         emit(SuccessDeleteCategoryState());
       } else if (result.status == -1 && result.error == 2) {
         emit(ErrorDeleteCategoryState(
-            '* Can\'t delete this $name because it already exists in note'));
+            '$name' + translation(context).existinNote));
       }
     } catch (e) {
       emit(FailureCategoryState(e.toString()));

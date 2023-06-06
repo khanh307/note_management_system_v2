@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/signin_cubit/signin_state.dart';
 import 'package:note_management_system_v2/cubits/signup_cubit/signup_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
@@ -15,7 +16,7 @@ class SignInCubit extends Cubit<SignInState> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> login(Account account) async {
+  Future<void> login(context, Account account) async {
     emit(SignInLoadingState());
     debugPrint(account.password);
     try {
@@ -30,10 +31,10 @@ class SignInCubit extends Cubit<SignInState> {
         emit(SignInSuccessState(loginUser));
       } else if (dataUser.status == SignInConstant.statusError &&
           dataUser.error == SignInConstant.errorWrongPassword) {
-        emit(SignInErrorState('Incorrect email address or password'));
+        emit(SignInErrorState(translation(context).incorrectEmailPass));
       } else if (dataUser.status == SignInConstant.statusError &&
           dataUser.error == SignInConstant.errorNotFound) {
-        emit(SignInErrorState('Account not found'));
+        emit(SignInErrorState(translation(context).notFoundAcc));
       }
     } catch (e) {
       emit(SignInErrorState(e.toString()));
@@ -41,7 +42,7 @@ class SignInCubit extends Cubit<SignInState> {
   }
 
   // sign in with gmail
-  Future<void> signInGooGle(Account account) async {
+  Future<void> signInGooGle(context, Account account) async {
     emit(SignInLoadingState());
     try {
       final GoogleSignInAccount? gUser = await _googleSignIn.signIn();
@@ -60,7 +61,7 @@ class SignInCubit extends Cubit<SignInState> {
       if (user != null) {
         emit(SignInSuccessState(account));
       } else {
-        emit(SignInErrorState('Sign in with Google failed'));
+        emit(SignInErrorState(translation(context).signinGGFail));
       }
     } catch (e) {
       emit(SignInErrorState(e.toString()));

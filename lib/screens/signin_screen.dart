@@ -15,6 +15,7 @@ import 'package:note_management_system_v2/models/account.dart';
 
 import 'package:note_management_system_v2/screens/signup_screen.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
+import 'package:note_management_system_v2/utils/regex/regex.dart';
 import 'package:note_management_system_v2/utils/snackbar/snack_bar.dart';
 import 'package:note_management_system_v2/utils/validate/validate_english.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -100,7 +101,7 @@ class _SignInHomeState extends State<SignInHome> {
               });
             } else if (state is SignInErrorState) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-               showSnackBar(context, state.errorMessage);
+                showSnackBar(context, state.errorMessage);
               });
             }
           },
@@ -153,11 +154,22 @@ class _SignInHomeState extends State<SignInHome> {
                               TextFormField(
                                 controller: _emailController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Enter your email',
+                                  labelText: 'Email',
                                   prefixIcon: Icon(Icons.email),
                                   border: OutlineInputBorder(),
                                 ),
-                                validator: ValidateEnglish.valiEmailSignIn,
+                                // validator: ValidateEnglish.valiEmailSignIn,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return translation(context).noInputField;
+                                  }
+
+                                  if (!isValidEmail(value)) {
+                                    return translation(context)
+                                        .incorrectEmailPass;
+                                  }
+                                  return null;
+                                },
                               ),
                               const SizedBox(
                                 height: 20,
@@ -202,7 +214,7 @@ class _SignInHomeState extends State<SignInHome> {
                               });
                             },
                           ),
-                          const Text('Remember me')
+                          Text(translation(context).rememberMe)
                         ],
                       ),
                     ),
@@ -223,6 +235,7 @@ class _SignInHomeState extends State<SignInHome> {
                             _saveRemember(_isCheckRemember);
 
                             context.read<SignInCubit>().login(
+                                  context,
                                   Account(
                                       email: email, password: encryptPasswords),
                                 );
@@ -295,7 +308,9 @@ class _SignInHomeState extends State<SignInHome> {
                                 photoUrl: photoUrl,
                               );
 
-                              context.read<SignInCubit>().signInGooGle(account);
+                              context
+                                  .read<SignInCubit>()
+                                  .signInGooGle(context, account);
                             }
                           });
                         },

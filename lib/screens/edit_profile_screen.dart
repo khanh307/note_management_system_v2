@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/edit_profile_cubit.dart/edit_cubit.dart';
 import 'package:note_management_system_v2/cubits/edit_profile_cubit.dart/edit_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
@@ -44,7 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               );
             } else if (state is EditProfileSuccess) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                showSnackBar(context, 'Successfully changed information');
+                showSnackBar(context, translation(context).changePassSucc);
               });
             } else if (state is EditProfileFaileure) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -92,12 +93,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'[a-zA-Z\s]')),
                               ],
-                              decoration: const InputDecoration(
-                                labelText: 'Enter your Firstname',
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: translation(context).fName,
+                                prefixIcon: const Icon(Icons.person),
+                                border: const OutlineInputBorder(),
                               ),
-                              validator: ValidateEnglish.validateFirstnameEdit,
+                              // validator: ValidateEnglish.validateFirstnameEdit,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return translation(context).noInputField;
+                                }
+
+                                if (value.trim().length < 2 ||
+                                    value.trim().length > 32) {
+                                  return translation(context).min2max32;
+                                }
+
+                                if (value.endsWith(' ')) {
+                                  return translation(context).noSpace;
+                                }
+
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 30,
@@ -108,12 +125,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'[a-zA-Z\s]')),
                               ],
-                              decoration: const InputDecoration(
-                                labelText: 'Enter your Lastname',
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: translation(context).lName,
+                                prefixIcon: const Icon(Icons.person),
+                                border: const OutlineInputBorder(),
                               ),
-                              validator: ValidateEnglish.validateLastnameEdit,
+                              // validator: ValidateEnglish.validateLastnameEdit,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return translation(context).noInputField;
+                                }
+
+                                if (value.length < 2 || value.length > 32) {
+                                  return translation(context).min2max32;
+                                }
+
+                                if (value.endsWith(' ')) {
+                                  return translation(context).noSpace;
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 30,
@@ -135,7 +166,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           lastname: lastName);
                                 }
                               },
-                              child: const Text('Update Profile'),
+                              child: Text(translation(context).update),
                             ),
                           ],
                         ),

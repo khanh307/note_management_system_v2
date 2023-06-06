@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_management_system_v2/Localization/language_constant.dart';
 import 'package:note_management_system_v2/cubits/change_password/change_password_cubit.dart';
 import 'package:note_management_system_v2/cubits/change_password/change_password_state.dart';
 import 'package:note_management_system_v2/models/account.dart';
@@ -58,11 +59,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               );
             } else if (state is ChangePasswordSuccess) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                showSnackBar(context, 'Successfully changed information');
+                showSnackBar(context, translation(context).changePassSucc);
               });
             } else if (state is ChangePasswordFaliure) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                showSnackBar(context, 'Password change failed');
+                showSnackBar(context, translation(context).changePassFail);
               });
             }
           },
@@ -101,27 +102,31 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               height: 20,
                             ),
                             TextFormField(
-                              controller: _currentPasswordController,
-                              obscureText: _obscureText,
-                              decoration: InputDecoration(
-                                labelText: 'Enter your current password',
-                                prefixIcon: const Icon(Icons.lock),
-                                suffixIcon: GestureDetector(
-                                  onTap: _togglePassword,
-                                  child: Icon(
-                                    _obscureText
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color: _obscureText
-                                        ? Colors.grey
-                                        : Colors.blue,
+                                controller: _currentPasswordController,
+                                obscureText: _obscureText,
+                                decoration: InputDecoration(
+                                  labelText: translation(context).curPass,
+                                  prefixIcon: const Icon(Icons.lock),
+                                  suffixIcon: GestureDetector(
+                                    onTap: _togglePassword,
+                                    child: Icon(
+                                      _obscureText
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: _obscureText
+                                          ? Colors.grey
+                                          : Colors.blue,
+                                    ),
                                   ),
+                                  border: const OutlineInputBorder(),
                                 ),
-                                border: const OutlineInputBorder(),
-                              ),
-                              validator:
-                                  ValidateEnglish.validateCurrentPassword,
-                            ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return translation(context).noInputField;
+                                  }
+
+                                  return null;
+                                }),
                             const SizedBox(
                               height: 20,
                             ),
@@ -132,7 +137,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               controller: _newPasswordController,
                               obscureText: _obscureTextNew,
                               decoration: InputDecoration(
-                                labelText: 'Enter your new password',
+                                labelText: translation(context).newPass,
                                 prefixIcon: const Icon(Icons.lock),
                                 border: const OutlineInputBorder(),
                                 suffixIcon: GestureDetector(
@@ -147,7 +152,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   ),
                                 ),
                               ),
-                              validator: ValidateEnglish.validateNewPassword,
+                              // validator: ValidateEnglish.validateNewPassword,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return translation(context).noInputField;
+                                }
+
+                                if (value.trim().length < 6 ||
+                                    value.trim().length > 32) {
+                                  return translation(context).min6max32;
+                                }
+
+                                RegExp upperCase = RegExp(r'[A-Z]');
+                                if (!upperCase.hasMatch(value)) {
+                                  return translation(context).capital1;
+                                }
+
+                                RegExp digit = RegExp(r'[0-9]');
+                                if (!digit.hasMatch(value)) {
+                                  return translation(context).min1Num;
+                                }
+
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 20,
@@ -176,15 +203,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                         .read<ChangePasswordCubit>()
                                         .changePassword(
                                             email: email,
-                                            password: hashPassword(currentPassword),
+                                            password:
+                                                hashPassword(currentPassword),
                                             newPassword: encryptPasswords);
                                   } else {
-                                    showSnackBar(
-                                        context, 'Password change failed');
+                                    showSnackBar(context,
+                                        translation(context).changePassFail);
                                   }
                                 }
                               },
-                              child: const Text('Change Password'),
+                              child: Text(translation(context).changePass),
                             ),
                           ],
                         ),
