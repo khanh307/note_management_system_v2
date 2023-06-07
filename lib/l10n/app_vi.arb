@@ -47,7 +47,7 @@
     "newPass":"Nhập mật khẩu mới",
     "changePassSucc":"Đổi thông tin thành công!",
     "changePassFail":"Đổi mật khẩu thất bại!",
-    "changeInfoFail":"Change information failed",
+    "changeInfoFail":"Thay đổi thông tin thất bại!",
     "noPickCate":"* Hãy chọn danh mục",
     "noPickstatus":"* Hãy chọn trạng thái",
     "noPickprio":"* Hãy chọn độ ưu tiên",
@@ -63,5 +63,8 @@
     "yesChoice":"Đồng ý",
     "no6Month":" không thể xóa bởi nó chưa đủ 6 tháng thời gian!",
     "existinNote":" không thể xóa bởi nó đang tồn tại trong Note",
-    "emptyData":"Không có gì ở đây!"
+    "emptyData":"Không có gì ở đây!",
+    "err":"* LỖI",
+    "upFail":"* Cập nhật thất bại!",
+    "cantDel":"Không thể xóa "
 }

@@ -34,13 +34,14 @@ class PriorityCubit extends Cubit<PriorityState> {
     }
   }
 
-  Future<void> updatePriority(String name, PriorityModel priority) async {
+  Future<void> updatePriority(
+      context, String name, PriorityModel priority) async {
     try {
       var result = await _priorityRepository.updatePriority(name, priority);
       if (result.status == 1) {
         emit(SuccessUpdatePriorityState(priority));
       } else if (result.status == -1) {
-        emit(ErrorUpdatePriorityState('* Lỗi'));
+        emit(ErrorUpdatePriorityState(translation(context).err));
       }
     } catch (e) {
       emit(FailurePriorityState(e.toString()));

@@ -164,7 +164,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                                   context
                                       .read<EditProfileCubit>()
-                                      .updateProfile(
+                                      .updateProfile(context,
                                           email: email,
                                           nemail: email,
                                           firstname: firstName,

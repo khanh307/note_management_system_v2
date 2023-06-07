@@ -79,7 +79,8 @@ class _NoteScreenState extends State<NoteScreen> {
             if (state is SuccessSubmitNoteState) {
               Navigator.of(context).pop();
               _nameController.clear();
-              showSnackBar(context, translation(context).addSucc + '${state.note.name}');
+              showSnackBar(
+                  context, translation(context).addSucc + '${state.note.name}');
               noteCubit.getAllNotes();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitNoteState) {
@@ -208,7 +209,7 @@ class _NoteScreenState extends State<NoteScreen> {
               child: Text(translation(context).noChoice)),
           ElevatedButton(
               onPressed: () async {
-                noteCubit.deleteNote(note.name!);
+                noteCubit.deleteNote(context, note.name!);
                 Navigator.pop(context, true);
               },
               child: Text(translation(context).yesChoice)),
@@ -373,8 +374,9 @@ class _NoteScreenState extends State<NoteScreen> {
                           );
 
                           (note == null)
-                              ? noteCubit.createNote(value)
-                              : noteCubit.updateNote(note.name!, value);
+                              ? noteCubit.createNote(context, value)
+                              : noteCubit.updateNote(
+                                  context, note.name!, value);
                         }
                       },
                       child: Text((note == null)

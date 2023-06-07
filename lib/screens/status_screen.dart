@@ -41,7 +41,8 @@ class _StatusScreenState extends State<StatusScreen> {
             if (state is SuccessSubmitStatusState) {
               Navigator.of(context).pop();
               _nameController.clear();
-              showSnackBar(context, translation(context).addSucc + '${state.status.name}');
+              showSnackBar(context,
+                  translation(context).addSucc + '${state.status.name}');
               statusCubit.getAllStatus();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitStatusState) {
@@ -213,7 +214,8 @@ class _StatusScreenState extends State<StatusScreen> {
 
                       (status == null)
                           ? statusCubit.createStatus(context, value)
-                          : statusCubit.updateStatus(status.name!, value);
+                          : statusCubit.updateStatus(
+                              context, status.name!, value);
                     }
                   },
                   child: Text((status == null)
