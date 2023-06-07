@@ -157,6 +157,7 @@ class _PriorityScreenState extends State<PriorityScreen> {
     );
 
     showDialog(
+        barrierDismissible: false,
         context: context,
         useRootNavigator: false,
         builder: (context) => dialog);

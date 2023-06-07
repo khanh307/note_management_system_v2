@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_management_system_v2/Localization/language_constant.dart';
+import 'package:note_management_system_v2/component/snack_bar.dart';
 
 import 'package:note_management_system_v2/cubits/status_cubit/status_cubit.dart';
 import 'package:note_management_system_v2/cubits/status_cubit/status_state.dart';
@@ -40,30 +41,24 @@ class _StatusScreenState extends State<StatusScreen> {
             if (state is SuccessSubmitStatusState) {
               Navigator.of(context).pop();
               _nameController.clear();
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      translation(context).addSucc + '${state.status.name}')));
+              showSnackBar(context, translation(context).addSucc + '${state.status.name}');
               statusCubit.getAllStatus();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitStatusState) {
               isDuplicate = true;
               _keyForm.currentState!.validate();
             } else if (state is SuccessDeleteStatusState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(translation(context).delSucc)));
+              showSnackBar(context, translation(context).delSucc);
               // statusCubit.getAllStatus();
             } else if (state is ErrorDeleteStatusState) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             } else if (state is SuccessUpdateStatusState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(translation(context).upSucc)));
+              showSnackBar(context, translation(context).upSucc);
               statusCubit.getAllStatus();
             } else if (state is ErrorUpdateStatusState) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              showSnackBar(context, state.message);
             }
           },
           buildWhen: (previous, current) {
@@ -156,6 +151,7 @@ class _StatusScreenState extends State<StatusScreen> {
     );
 
     return await showDialog(
+        barrierDismissible: false,
         context: context,
         useRootNavigator: false,
         builder: (context) => dialog);

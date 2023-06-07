@@ -77,7 +77,7 @@ class _HomePage extends StatelessWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.only(right: 10, top: 10, bottom: 10),
             child: DropdownButton<Language>(
               underline: const SizedBox(),
               icon: const Icon(

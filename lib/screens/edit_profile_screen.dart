@@ -48,7 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               });
             } else if (state is EditProfileFaileure) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                showSnackBar(context, 'Change information failed');
+                showSnackBar(context, translation(context).changeInfoFail);
               });
             }
           },

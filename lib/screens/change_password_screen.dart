@@ -22,7 +22,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final _formkeyChange = GlobalKey<FormState>();
+  final _formKeyChange = GlobalKey<FormState>();
 
   bool _obscureText = true;
   bool _obscureTextNew = true;
@@ -80,7 +80,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Form(
-                        key: _formkeyChange,
+                        key: _formKeyChange,
                         child: Column(
                           children: [
                             TextFormField(
@@ -187,7 +187,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25, vertical: 15)),
                               onPressed: () {
-                                if (_formkeyChange.currentState!.validate()) {
+                                if (_formKeyChange.currentState!.validate()) {
                                   final email = _emailController.text;
                                   final currentPassword =
                                       _currentPasswordController.text;

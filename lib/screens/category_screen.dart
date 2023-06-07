@@ -153,6 +153,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
 
     return await showDialog(
+        barrierDismissible: false,
         context: context,
         useRootNavigator: false,
         builder: (context) => dialog);

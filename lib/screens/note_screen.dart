@@ -79,9 +79,7 @@ class _NoteScreenState extends State<NoteScreen> {
             if (state is SuccessSubmitNoteState) {
               Navigator.of(context).pop();
               _nameController.clear();
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      translation(context).addSucc + '${state.note.name}')));
+              showSnackBar(context, translation(context).addSucc + '${state.note.name}');
               noteCubit.getAllNotes();
               // statusCubit.addNewStatus(state.status);
             } else if (state is ErrorSubmitNoteState) {
@@ -218,6 +216,7 @@ class _NoteScreenState extends State<NoteScreen> {
       );
 
       return await showDialog(
+          barrierDismissible: false,
           context: context,
           useRootNavigator: false,
           builder: (context) => dialog);
