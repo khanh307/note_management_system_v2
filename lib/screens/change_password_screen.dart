@@ -8,7 +8,6 @@ import 'package:note_management_system_v2/models/account.dart';
 import 'package:note_management_system_v2/utils/password_uils.dart';
 import 'package:note_management_system_v2/utils/snackbar/snack_bar.dart';
 
-
 class ChangePasswordScreen extends StatefulWidget {
   final Account user;
   const ChangePasswordScreen({Key? key, required this.user}) : super(key: key);
@@ -201,7 +200,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       hashPassword(currentPassword)) {
                                     context
                                         .read<ChangePasswordCubit>()
-                                        .changePassword(
+                                        .changePassword(context,
                                             email: email,
                                             password:
                                                 hashPassword(currentPassword),

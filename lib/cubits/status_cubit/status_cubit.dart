@@ -34,13 +34,13 @@ class StatusCubit extends Cubit<StatusState> {
     }
   }
 
-  Future<void> updateStatus(String name, Status status) async {
+  Future<void> updateStatus(context, String name, Status status) async {
     try {
       var result = await _statusRepository.updateStatus(name, status);
       if (result.status == 1) {
         emit(SuccessUpdateStatusState(status));
       } else if (result.status == -1) {
-        emit(ErrorUpdateStatusState('* Lỗi'));
+        emit(ErrorUpdateStatusState(translation(context).err));
       }
     } catch (e) {
       emit(FailureStatusState(e.toString()));

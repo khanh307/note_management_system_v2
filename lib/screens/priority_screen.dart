@@ -220,7 +220,8 @@ class _PriorityScreenState extends State<PriorityScreen> {
 
                       (priority == null)
                           ? priorityCubit.createPriority(context, value)
-                          : priorityCubit.updatePriority(priority.name!, value);
+                          : priorityCubit.updatePriority(
+                              context, priority.name!, value);
                     }
                   },
                   child: Text((priority == null)
